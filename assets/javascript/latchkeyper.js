@@ -1,5 +1,5 @@
   // Initialize Firebase
-  /*var config = {
+  var config = {
     apiKey: "AIzaSyDYUmxcgXcMpWsHt_GGtQSsw2nukEurl_c",
     authDomain: "latchkeyper.firebaseapp.com",
     databaseURL: "https://latchkeyper.firebaseio.com",
@@ -7,7 +7,7 @@
     storageBucket: "latchkeyper.appspot.com",
     messagingSenderId: "1055724083998"
   };
-  firebase.initializeApp(config);*/
+  firebase.initializeApp(config);
 
   //End required firebase code
 

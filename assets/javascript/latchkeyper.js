@@ -45,7 +45,8 @@ $(document).ready(function() {
 $("button").click(message);
 $(document).on("click", "#message-parents-button", message);
 message ();
-});
+
+
 function message () {
   var msg = $("#new-msg").val();
   $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");

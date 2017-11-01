@@ -48,6 +48,7 @@ function checkIn () {
   var checkingIn = new Date();
   $("#messages").append("<div> Your child checked in at home at:  " + checkingIn + "<span id='delete'>X</span></div>");
 }
+//this writes to the div on this page, but will need to write to the parents page eventually
 function requestReward () {
   var rewardRequest = prompt("Request a reward: ");
   $("#reward-requests").append("<div>" + rewardRequest + "<span id='delete'>X</span></div>");
@@ -69,7 +70,7 @@ function removeTask() {
 //---------------event listening ---------------------------------
 
   $("#message-parents-button").click(messageParents);
-  $("#task-list-button").click(addTask);
+  // $("#task-list-button").click(addTask);
   $("#check-in-button").click(checkIn);
   $("#request-reward-button").click(requestReward);
   $("#add").click(addTask);

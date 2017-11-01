@@ -8,18 +8,25 @@
     </head>
 
     <body class="body">
-        <button type="button" class="btn btn-primary">Check In</button>
-        <button type="button" class="btn btn-primary">Task List</button>
-        <button type="button" class="btn btn-primary">Request a Reward</button>
-        <button type="button" class="btn btn-primary">Check Points Balance</button>
-        <button type="button" class="btn btn-primary">Message to Parent</button>
+        <button type="button" class="btn btn-primary" id="check-in-button">Check In</button>
+        <button type="button" class="btn btn-primary" id="task-list-button">Task List</button>
+        <button type="button" class="btn btn-primary" id="request-reward-button">Request a Reward</button>
+        <button type="button" class="btn btn-primary" id="check-points-button">Check Points Balance</button>
+        <button type="button" class="btn btn-primary" id="message-parents-button">Message to Parent</button>
 
       <div class="jumbotron">
       		<p class="text-center">Message Center:  <span class="message"></span></p>
       </div>
 
       <div class="container">
-        <div class="row content-center" id="ADDIDHERELATER"></div>
+        <div class="row content-center"></div>
+
+          <h1>Task List</h1>
+          <input id="new-task" type="text">
+          <button id="add">Add!</button>
+          <div id="tasks"></div>
+
+
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>

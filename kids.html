@@ -9,7 +9,7 @@
 
     <body class="body">
         <button type="button" class="btn btn-primary" id="check-in-button">Check In</button>
-        <button type="button" class="btn btn-primary" id="task-list-button">Task List</button>
+        <!-- <button type="button" class="btn btn-primary" id="task-list-button">Task List</button> -->
         <button type="button" class="btn btn-primary" id="request-reward-button">Request a Reward</button>
         <button type="button" class="btn btn-primary" id="check-points-button">Check Points Balance</button>
         <button type="button" class="btn btn-primary" id="message-parents-button">Message to Parent</button>
@@ -19,85 +19,72 @@
       </div>
 
       <div class="container">
-        <div class="row content-center"></div>
+        <div class="row content-center" id="tasks">
 
           <h1>Task List</h1>
           <input id="new-task" type="text">
           <button id="add">Add!</button>
-          <div id="tasks"></div>
+        </div>
+        <hr>
 
- 		    <div class="row content-center" id="ADDIDHERELATER"></div>
- 		    <div class="row content-center" id="ADDIDHERELATER"></div>
- 		    <div class="row content-center" id="ADDIDHERELATER"></div>
+ 		    <div class="row content-center">
+          <h1>Reward List:</h1>
+          <ul id="reward-requests">
+          </ul>
+        </div>
+
       </div>
-    <script type="text/javascript" src="./assets/javascript/latchkeyper.js">
+    <!-- <script type="text/javascript" src="./assets/javascript/latchkeyper.js"> -->
+    <script>
+$(document).ready(function() {
+//-----------------------------functions go here--------------------------------
+//this writes to the jumbotron on this page, but will need to write to the parents page eventually
+function messageParents () {
+  var msg = prompt("Enter your message:");
+  $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+}
+//this writes to the jumbotron on this page, but will need to write to the parents page eventually
+function checkIn () {
+  var checkingIn = new Date();
+  $("#messages").append("<div> Your child checked in at home at:  " + checkingIn + "<span id='delete'>X</span></div>");
+}
+//this writes to the div on this page, but will need to write to the parents page eventually
+function requestReward () {
+  var rewardRequest = prompt("Request a reward: ");
+  $("#reward-requests").append("<div>" + rewardRequest + "<span id='delete'>X</span></div>");
+}
+// function checkPoints () {
+// }
+
+function addTask() {
+  var task = $("#new-task").val();
+  $("#tasks").append("<div>" + task + "<span id='delete'>X</span></div>");
+  $("#new-task").val("");
+}
+function removeTask() {
+  $(this).closest("div").remove();
+}
 
 
-    function assignTask () {
+
+//---------------event listening ---------------------------------
+
+  $("#message-parents-button").click(messageParents);
+  // $("#task-list-button").click(addTask);
+  $("#check-in-button").click(checkIn);
+  $("#request-reward-button").click(requestReward);
+  $("#add").click(addTask);
+  $(document).on("click", "#delete", removeTask);
+  $("input").keypress(function(event) {
+    // listen to see that key was "enter."
+    if (event.which === 13) {
+      // If so, run addTask.
+      addTask();
     }
-
-    function mangagePoints () {
-    }
-
-    function respondToRequest () {
-    }
-
-    function checkIn () {
-    }
-
-    function taskLisk () {
-    }
-
-    function requestReward () {
-    }
-
-    function checkPoints () {
-    }
+  });
 
 
-    $(document).ready(function() {
-
-    $("button").click(message);
-    $(document).on("click", "#message-parents-button", message);
-    message ();
-    });
-    function message () {
-      var msg = $("#new-msg").val();
-      $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-      $("#new-msg").val("");
-
-    }
-
-
-    $("button").click(addTask);
-    $(document).on("click", "#delete", removeTask);
-
-    $("input").keypress(function(event) {
-      //13 is the ascii code for the enter key
-      if (event.which === 13) {
-        addTask();
-      }
-    });
-    // Function to add a task.
-    function addTask() {
-      var task = $("#new-task").val();
-      $("#tasks").append("<div>" + task + "<span id='delete'>X</span></div>");
-      $("#new-task").val("");
-    }
-    // Function to remove a task.
-    function removeTask() {
-      // Grab the closest div to the element that was clicked and remove it.
-      // (In this case, the closest element is the one that's encapsulating it.)
-      $(this).closest("div").remove();
-    }
-
-    });
-
-
-
-
-
-
+});
 
     </script>
 

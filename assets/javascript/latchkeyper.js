@@ -1,3 +1,16 @@
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDYUmxcgXcMpWsHt_GGtQSsw2nukEurl_c",
+    authDomain: "latchkeyper.firebaseapp.com",
+    databaseURL: "https://latchkeyper.firebaseio.com",
+    projectId: "latchkeyper",
+    storageBucket: "latchkeyper.appspot.com",
+    messagingSenderId: "1055724083998"
+  };
+  firebase.initializeApp(config);
+  //End required firebase code
+
+
 var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var chores = ["Laundry", "Dishes", "Mow Lawn", "Rake Leaves", "Walk Dog", "Clean Room", "Pick up dog poop", "Vacuum", "Sweep Floor", "Clean Bathroom"];
 var schoolwork = [];

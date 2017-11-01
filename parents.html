@@ -5,6 +5,61 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
       <link rel="stylesheet" href="./assets/css/style.css">
       <title>Latchkeyper Parents Page</title>
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: #422557;
+}
+
+.bar:hover {
+  fill: #316add ;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+</style>
     </head>
     <body class="body">
         <button type="button" class="btn btn-primary" id="message-child-button">Message to Child</button>
@@ -22,6 +77,11 @@
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
       </div>
+
+      <!--adds d3 library  -->
+
+        <script src="http://d3js.org/d3.v3.js"></script>
+        <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script type="text/javascript" src="./assets/javascript/latchkeyper.js"></script>
     </body>
   </html>

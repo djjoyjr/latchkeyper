@@ -45,6 +45,7 @@ $(document).ready(function() {
 $("button").click(message);
 $(document).on("click", "#message-parents-button", message);
 message ();
+
 //});  commented out to wrap the rest of the functions
 function message () {
   var msg = $("#new-msg").val();

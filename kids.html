@@ -15,7 +15,7 @@
         <button type="button" class="btn btn-primary" id="message-parents-button">Message to Parent</button>
 
       <div class="jumbotron">
-      		<p class="text-center">Message Center:  <span class="message"></span></p>
+      		<p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
       </div>
 
       <div class="container">
@@ -26,11 +26,85 @@
           <button id="add">Add!</button>
           <div id="tasks"></div>
 
-
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
       </div>
-    <script type="text/javascript" src="./assets/javascript/latchkeyper.js"></script>
+    <script type="text/javascript" src="./assets/javascript/latchkeyper.js">
+
+
+    function assignTask () {
+    }
+
+    function mangagePoints () {
+    }
+
+    function respondToRequest () {
+    }
+
+    function checkIn () {
+    }
+
+    function taskLisk () {
+    }
+
+    function requestReward () {
+    }
+
+    function checkPoints () {
+    }
+
+
+    $(document).ready(function() {
+
+    $("button").click(message);
+    $(document).on("click", "#message-parents-button", message);
+    message ();
+    });
+    function message () {
+      var msg = $("#new-msg").val();
+      $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+      $("#new-msg").val("");
+
+    }
+
+
+    $("button").click(addTask);
+    $(document).on("click", "#delete", removeTask);
+
+    $("input").keypress(function(event) {
+      //13 is the ascii code for the enter key
+      if (event.which === 13) {
+        addTask();
+      }
+    });
+    // Function to add a task.
+    function addTask() {
+      var task = $("#new-task").val();
+      $("#tasks").append("<div>" + task + "<span id='delete'>X</span></div>");
+      $("#new-task").val("");
+    }
+    // Function to remove a task.
+    function removeTask() {
+      // Grab the closest div to the element that was clicked and remove it.
+      // (In this case, the closest element is the one that's encapsulating it.)
+      $(this).closest("div").remove();
+    }
+
+    });
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
     </body>
   </html>

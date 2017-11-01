@@ -5,9 +5,6 @@ var miscellaneous = ["Practice Instrument", "Write to Grandparents", "Floss"];
 
 
 
-function message () {
-}
-
 function assignTask () {
 }
 
@@ -32,9 +29,16 @@ function checkPoints () {
 
 $(document).ready(function() {
 
-// $(".button").on("click", function(){
-//
-// }
+$("button").click(message);
+$(document).on("click", "#message-parents-button", message);
+message ();
+});
+function message () {
+  var msg = $("#new-msg").val();
+  $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+  $("#new-msg").val("");
+
+}
 
 
 $("button").click(addTask);
@@ -46,14 +50,12 @@ $("input").keypress(function(event) {
     addTask();
   }
 });
-
 // Function to add a task.
 function addTask() {
   var task = $("#new-task").val();
   $("#tasks").append("<div>" + task + "<span id='delete'>X</span></div>");
   $("#new-task").val("");
 }
-
 // Function to remove a task.
 function removeTask() {
   // Grab the closest div to the element that was clicked and remove it.

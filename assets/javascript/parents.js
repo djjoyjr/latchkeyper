@@ -80,6 +80,16 @@ $(document).ready( function(){
 				choreRemove.remove();
 			});
 
+			//Generate dropdown list of children
+			var list = $("#forWhom");
+			$('<option />', {value: "All", text: "All"}).appendTo(list);
+			dbRefKids.on("value", function(snapshot){
+				snapshot.forEach(function(child){
+					var name = child.key;
+					$('<option />', {value: name, text: name}).appendTo(list);
+				});
+			});
+
         }
         else {
           console.log("Not logged in"); //Use to confirm logout in development
@@ -112,12 +122,13 @@ $(document).ready( function(){
       	var prioPoints = parseInt($("#priority").val());
       	var diffPoints = parseInt($("#difficulty").val());
       	var totPoints = prioPoints + diffPoints;
+      	var whoDo = $("#forWhom").val();
       	var dbRefUser = dbRefRoot.child(activeUser);
       		if(dbRefUser.child("chores")){
-      			dbRefUser.child("chores").update({[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints}})
+      			dbRefUser.child("chores").update({[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints, "For": whoDo}})
       		}
       		else {
-      			dbRefUser.update({"chores":{[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints}}})
+      			dbRefUser.update({"chores":{[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints, "For": whoDo}}})
       		}
       });
 
@@ -137,7 +148,9 @@ $(document).ready( function(){
 
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
-      	console.log("I removed " +this.id);
+      	var dbRefUser = dbRefRoot.child(activeUser);
+      	var dbRefChores = dbRefUser.child("chores");
+      	dbRefChores.child(this.id).remove();
       });
 
 });//End of document.ready

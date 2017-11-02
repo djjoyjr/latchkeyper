@@ -89,21 +89,6 @@ $(document).ready( function(){
         firebase.auth().signOut();
       });
 
-      //onClick toggle to show/hide child addition form
-      addChild.on("click", function(){
-      	if(togChild.css("visibility") === "hidden"){
-      		togChild.css("visibility","visible");
-      	}
-      	else{
-      		togChild.css("visibility","hidden");
-      	}
-      });
-
-    
-
-	
-      
-
       //onClick of submitChild
       submitChild.on("click", function(){
       	var kidname = $("#childName").val();

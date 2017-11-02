@@ -11,9 +11,8 @@ $(document).ready( function(){
 
     //jQuery grab elements by ID
     	const btnSignOut = $("#btnSignOut");
-    	const addChild = $("#addChild");
-    	const togChild = $(".togChild");
     	const submitChild = $("#submitChild");
+    	const addChore = $("#addTask");
     	const dbRefRoot = firebase.database().ref();
 
       //Function create user
@@ -54,6 +53,7 @@ $(document).ready( function(){
           	//Database references
     		var dbRefUser = dbRefRoot.child(activeUser);
     		var dbRefKids = dbRefUser.child("children");
+    		var dbRefChores = dbRefUser.child("chores");
 
     		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
@@ -64,9 +64,15 @@ $(document).ready( function(){
 				$("#listOfKids").append(newKid);
 			});
 
-
-
-			//Updates list of chores
+			//Updates listOfChores when chore added (or on load)
+    		dbRefChores.on('child_added', function(snapshot){
+				var newChore = $('<li></li>'); //Creates new list item
+				console.log(snapshot);
+				newChore.text(snapshot.key); //Updates text of kid
+				newChore.addClass("chores");
+				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
+				$("#listOfChores").append(newChore);
+			});
 
         }
         else {
@@ -76,14 +82,7 @@ $(document).ready( function(){
       });
 
       var activeUser;
-      //Change welcome message to user display name if present
-      firebase.auth().onAuthStateChanged( function(currentUser){
-
-      	
-      });
     	
-
-
       //onClick event for Logout button
       btnSignOut.on("click", function(){
         firebase.auth().signOut();
@@ -99,6 +98,35 @@ $(document).ready( function(){
       		else {
       			dbRefUser.update({"children":{[kidname]:{"points": 0}}});
       		}
-      		
       });
+
+      //onClick of addChore
+      addChore.on("click", function(){
+      	var choreName = $("#new-task").val();
+      	var prioPoints = $("#priority").val();
+      	var diffPoints = $("#difficulty").val();
+      	var totPoints = prioPoints + diffPoints;
+      	var dbRefUser = dbRefRoot.child(activeUser);
+      		if(dbRefUser.child("chores")){
+      			dbRefUser.child("chores").update({[choreName]:{"done": false, "Diff": [diffPoints], "Prio": [prioPoints], "Total": [totPoints]}})
+      		}
+      		else {
+      			dbRefUser.update({"chores":{[choreName]:{"done": false, "Diff": [diffPoints], "Prio": [prioPoints], "Total": [totPoints]}}})
+      		}
+      });
+
+      //onClick of addMessage
+      $("#message-child-button").click(messageChild);
+      function messageChild () {
+        var msg = prompt("Enter your message:");
+        var dbRefUser = dbRefRoot.child(activeUser);
+            if(dbRefUser.child("messages")){
+              dbRefUser.child("mesages").push(msg);
+            }
+            else {
+              dbRefUser.push({"messages":msg});
+            }
+        $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+      };
+
 });//End of document.ready

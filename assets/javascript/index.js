@@ -36,9 +36,7 @@ $(document).ready( function(){
       //Function create user
       const createUser = function (userID, userName, email){
         console.log(userID, userName, email);
-        dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}});
-        dbRefRoot.child(userID).update({"children": "bob"});
-        dbRefRoot.child(userID).update({"messages": "fuck you bob"});
+        dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}}); 
       }
 
       //onAuthStateChanged listens for state to change to either logged in or logged out

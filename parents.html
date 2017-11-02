@@ -50,8 +50,29 @@
         <div class="row">
           <div class="col-md-12">
             <h2>Task List</h2>
+            <ul id="listOfChores"></ul>
+            Name of task:
             <input id="new-task" type="text">
-            <button id="add">Add!</button>
+            <br>
+            Priority (5 - high, 1 - low):
+            <select id="priority">
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+            </select>
+            <br>
+            Difficulty (5 - high, 1 - low):
+            <select id="difficulty">
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+            </select>
+            <br>
+            <button id="addTask">Add!</button>
             <ul id="tasks"></ul>
           </div>
         </div>
@@ -65,6 +86,7 @@
 
       <!--adds d3 library  -->
 <script>
+
         <!-- <script src="http://d3js.org/d3.v3.js"> -->
 
 //-----------------------------functions go here--------------------------------

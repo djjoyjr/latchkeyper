@@ -1,0 +1,38 @@
+.index {
+  background-image: url(../images/latchkeyperbckgrnd.jpg);
+}
+
+.jumbotron {
+  width: 50%;
+  height: 25%;
+  margin-left: 25%;
+  margin-top: 5%;
+  background-color: rgba(214, 248, 214, .5);
+  border: solid 2px #436565;
+
+}
+
+h1, h4 {
+  color: #02111b;
+  font-family: 'Spinnaker', sans-serif;
+}
+
+.nav-link{
+  background-color: rgba(214, 248, 214, .5);
+  color: #02111b;
+}
+.card-header{
+  background-color: #75c6a4;
+}
+
+.btn-primary{
+  background-color: #02111b;
+  border: #02111b;
+}
+
+.card {
+  background-color: #fff;
+  /*rgba(214, 248, 214, .5);*/
+  border: none;
+  /*solid 2px #436565;*/
+}

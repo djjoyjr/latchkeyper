@@ -55,7 +55,7 @@ $(document).ready( function(){
     		//Updates listOfKids on value change
     		dbRefKids.on('child_added', function(snapshot){
     			console.log("I'm at least triggering");
-				var newKid = $('<li>'); //Creates new list item
+				var newKid = $('<li></li>'); //Creates new list item
 				newKid.text(snapshot.key); //Updates text of chore
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				console.log(newKid);

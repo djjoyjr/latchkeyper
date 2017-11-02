@@ -19,7 +19,7 @@ $(document).ready( function(){
       //Function create user
       const createUser = function (userID, userName, email){
         console.log(userID, userName, email);
-        dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}}{"children": null}{"messages":null});
+        dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}},{"children": null},{"messages":null});
       }
 
       //onAuthStateChanged listens for state to change to either logged in or logged out

@@ -19,7 +19,7 @@ $(document).ready( function(){
       //Function create user
       const createUser = function (userID, userName, email){
         console.log(userID, userName, email);
-        dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}});
+        dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}}{"children": null}{"messages":null});
       }
 
       //onAuthStateChanged listens for state to change to either logged in or logged out
@@ -52,15 +52,19 @@ $(document).ready( function(){
           	//Database references
     		var dbRefUser = dbRefRoot.child(activeUser);
     		var dbRefKids = dbRefUser.child("children");
-    		//Updates listOfKids on value change
+
+    		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
-    			console.log("I'm at least triggering");
 				var newKid = $('<li></li>'); //Creates new list item
-				newKid.text(snapshot.key); //Updates text of chore
+				newKid.text(snapshot.key); //Updates text of kid
+				newKid.addClass("kids");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
-				console.log(newKid);
 				$("#listOfKids").append(newKid);
 			});
+
+
+
+			//Updates list of chores
 
         }
         else {
@@ -93,14 +97,9 @@ $(document).ready( function(){
       	}
       });
 
-      //Sync list of kids to DB
     
 
-	//Syncs list when kid is removed
-	/*dbRefKids.on('child_removed', function(snapshot){
-		const kidRemove = $("#"+shapshot.key);
-		choreRemove.remove();
-	});*/
+	
       
 
       //onClick of submitChild

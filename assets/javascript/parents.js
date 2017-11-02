@@ -14,6 +14,7 @@ $(document).ready( function(){
     	const submitChild = $("#submitChild");
     	const addChore = $("#addTask");
     	const dbRefRoot = firebase.database().ref();
+    	const rmvChores = $(".rmvChore");
 
       //Function create user
       const createUser = function (userID, userName, email){
@@ -58,8 +59,8 @@ $(document).ready( function(){
     		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
 				var newKid = $('<div></div>'); //Creates new div
-				newKid.html("<p class='kids'>"+snapshot.key+"</p><button id='msg"+snapshot.key+"'>Message "+snapshot.key+"</button>");
 				newKid.addClass("kids");
+				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
 			});
@@ -67,7 +68,7 @@ $(document).ready( function(){
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
 				var newChore = $('<div></div>'); //Creates new div
-				newChore.html("<p class='chores'>"+snapshot.key+"</p><button id='rmv"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+				newChore.html("<p class='chores'>"+snapshot.key+"</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
 				newChore.addClass("chores");
 				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfChores").append(newChore);
@@ -109,7 +110,6 @@ $(document).ready( function(){
       addChore.on("click", function(){
       	var choreName = $("#new-task").val();
       	var prioPoints = parseInt($("#priority").val());
-      	console.log(prioPoints);
       	var diffPoints = parseInt($("#difficulty").val());
       	var totPoints = prioPoints + diffPoints;
       	var dbRefUser = dbRefRoot.child(activeUser);
@@ -134,5 +134,10 @@ $(document).ready( function(){
             }
         $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
       };
+
+      //onClick of removeChore
+      $("#listOfChores").on("click", "button", function(){
+      	console.log("I removed " +this.id);
+      });
 
 });//End of document.ready

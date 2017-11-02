@@ -3,6 +3,7 @@
     <head>
       <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="./assets/javascript/parents.js"></script>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
       <link rel="stylesheet" href="./assets/css/style.css">
       <title>Latchkeyper Parents Page</title>
@@ -63,22 +64,49 @@ body {
 </style>
     </head>
     <body class="body">
-        <button type="button" class="btn btn-primary" id="message-child-button">Message to Child</button>
-        <!-- <button type="button" class="btn btn-primary" id="assign-task-button">Assign a Task</button> -->
-        <button type="button" class="btn btn-primary" id="manage-points-button">Manage Points</button>
-        <button type="button" class="btn btn-primary" id="respond-to-request-button">Respond to a Request</button>
-        <button type="button" class="btn btn-primary" id="analytics-button">Analytics</button>
-
-        <div class="jumbotron">
-        		<p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
-        </div>
-
+      <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1"><a href="index.html">Latchkeyper</a></span>
+        <button id="btnSignOut" class="btn btn-dark navbar-right">Sign Out</button>
+      </nav>
       <div class="container">
-        <div class="row content-center" id="tasks">
-
-          <h1>Task List</h1>
-          <input id="new-task" type="text">
-          <button id="add">Add!</button>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="jumbotron">
+              <h1 id="welcome"></h1>
+              <hr>
+              <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
+            </div>
+          </div><!--End column-->
+        </div><!--End row-->
+        <div class="row">
+          <div class="col-md-12" id="parent-controls">
+            <button type="button" class="btn btn-primary" id="message-child-button">Message to Child</button>
+            <!-- <button type="button" class="btn btn-primary" id="assign-task-button">Assign a Task</button> -->
+            <button type="button" class="btn btn-primary" id="manage-points-button">Manage Points</button>
+            <button type="button" class="btn btn-primary" id="respond-to-request-button">Respond to a Request</button>
+            <button type="button" class="btn btn-primary" id="analytics-button">Analytics</button>
+            <hr>
+          </div><!--End column-->
+        </div><!--End row-->
+        <div class="row">
+          <div class="col-md-12">
+            <div id="children">
+                <h2>Children</h2>
+                <ul id="listOfKids"></ul>
+                <button class="btn btn-primary" id="addChild">Add a Child</button>
+                <input type="text" id="childName" class="togChild" placeholder="Enter Child's Name" style="visibility: hidden">
+                <button id="submitChild" class="togChild" style="visibility: hidden">Submit</button>
+                <hr>
+            </div>
+          </div><!--End column-->
+        </div><!--End row-->
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Task List</h2>
+            <input id="new-task" type="text">
+            <button id="add">Add!</button>
+            <ul id="tasks"></ul>
+          </div>
         </div>
         <hr>
 

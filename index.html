@@ -4,101 +4,38 @@
       <!--Firebase script include, must be at the top of all pages-->
       <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <!--<script type="text/javascript" src="./assets/javascript/latchkeyper.js"></script>-->
-  <script type="text/javascript">
-  $(document).ready(function(){
-
-    // FirebaseUI config.
-      var uiConfig = {
-        signInSuccessUrl: 'index.html',
-        signInOptions: [
-          // Leave the lines as is for the providers you want to offer your users.
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        ],
-      };
-
-      // Initialize the FirebaseUI Widget using Firebase.
-      var ui = new firebaseui.auth.AuthUI(firebase.auth());
-      // The start method will wait until the DOM is loaded.
-      ui.start('#firebaseui-auth-container', uiConfig);
-
-      //jQuery grab elements by ID
-      const btnSignOut = $("#btnSignOut");
-
-      //Database references
-      const dbRefRoot = firebase.database().ref();
-      var dbRefUser = 0;
-
-      //Function create user
-      const createUser = function (userID, userName, email){
-        console.log(userID, userName, email);
-        dbRefRoot.child(userID).set({"name": userName, "email": email});
-
-      }
-
-    //Example of onAuthStateChange, shows LogOut when logged in, hides when logged out
-    firebase.auth().onAuthStateChanged( function(currentUser){
-      console.log("Running");
-      if(currentUser){
-        console.log(currentUser.uid); //Use to confirm login in developement
-        btnSignOut.css("visibility", "visible");
-        dbRefRoot.once('value', function(snapshot) {
-          if (snapshot.hasChild(currentUser.uid)) {
-            console.log("User exists in DB");
-           }
-          else {
-          console.log("This user does not exist in the DB yet")
-          createUser(currentUser.uid, currentUser.displayName, currentUser.email);
-          
-            }
-        });
-        
-        
-      
-      }
-      else {
-        console.log("Not logged in"); //Use to confirm logout in development
-        btnSignOut.css("visibility", "hidden");
-      }
-    });
-
-    btnSignOut.on("click", function(){
-      console.log("I'm running");
-      firebase.auth().signOut();
-    });
-
-
-  });
-  </script>
+      <script type="text/javascript" src="./assets/javascript/index.js"></script>
       <script src="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.js"></script>
-      <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.css" />
-      <!--End firebase include-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.4.1/firebaseui.css">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
       <link rel="stylesheet" href="./assets/css/style.css">
-      <title>Latchkeyper Landing Page</title>
+        <title>Latchkeyper Landing Page</title>
+      <script type="text/javascript">
+
+      </script>
     </head>
     <body class="body">
-      <div class="container">
-        <div class="jumbotron">
+      <div class="container"><!--Begin container-->
+        <div class="jumbotron"><!--Begin Jumbotron-->
+
           <h1 class="text-center topbar">Latchkeyper</h1>
+
       	   <hr>
+
+           <!--Login buttons created by FirebaseUI-->
            <div id="firebaseui-auth-container"></div>
-           <!--<input type="text" name="email" placeholder="Enter your email">
-           <input type="password" name="pass" placeholder="Enter your password">
-           <br>
-          <button id="btnLogin" class="btn btn-primary btn-success">Log In</button>
-          <button id="btnSignUp" class="btn btn-primary btn-light">Sign Up</button>-->
+
+           <!--Logout button - can be moved anywhere-->
           <button id="btnSignOut" class="btn btn-primary btn-dark">Sign Out</button>
-        </div>
+
+        </div><!--End Jumbotron-->
 
       
         <div class="row content-center" id="ADDIDHERELATER"></div>
           <a href="./parents.html"><img border="0" alt="Parents" src="./assets/images/parents.png" width="100" height="100"></a>
           <a href="./kids.html"><img border="0" alt="Kids" src="./assets/images/kids.png" width="100" height="100"></a>
           <p class="text-center">Message Center:  <span class="message"></span></p>
-      </div>
+      </div><!--End container-->
     
     </body>
   </html>

@@ -85,7 +85,7 @@ $(document).ready( function(){
 			//Generate dropdown list of children
 			var list = $("#forWhom");
 			$('<option />', {value: "All", text: "All"}).appendTo(list);
-			dbRefKids.on("value", function(snapshot){
+			dbRefKids.once("value", function(snapshot){
 				snapshot.forEach(function(child){
 					var name = child.key;
 					$('<option />', {value: name, text: name}).appendTo(list);

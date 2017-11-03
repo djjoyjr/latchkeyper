@@ -10,62 +10,70 @@
     </head>
 
     <body class="body">
-        <button type="button" class="btn btn-primary" id="check-in-button">Check In</button><select class="forWhom"></select>
-        <button type="button" class="btn btn-primary" id="request-reward-button">Request a Reward</button><select class="forWhom"></select>
-        <button type="button" class="btn btn-primary" id="check-points-button">Check Points Balance</button>
-        <button type="button" class="btn btn-primary" id="message-parents-button">Message to Parent</button>
-
-      <div class="jumbotron">
-        <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
-      </div>
-
+      <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1"><a href="index.html">Latchkeyper</a></span>
+      </nav>
       <div class="container">
-        <!-- this is the old to do list, which will be replaced by the dynamic list.  -->
-        <!-- <div class="row content-center" id="tasks">
-          <h1>Task List</h1>
-          <input id="new-task" type="text">
-          <button id="add">Add!</button>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="jumbotron">
+              <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
+            </div>
+          </div>
         </div>
-      <hr> -->
- 		    <div class="row content-center">
-          <h1>Reward List:</h1>
-          <ul id="reward-requests">
-          </ul>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="kid-controls">
+              <button type="button" class="btn btn-primary" id="check-in-button">Check In</button><select class="forWhom"></select>
+              <button type="button" class="btn btn-primary" id="request-reward-button">Request a Reward</button><select class="forWhom"></select>
+              <button type="button" class="btn btn-primary" id="check-points-button">Check Points Balance</button>
+              <button type="button" class="btn btn-primary" id="message-parents-button">Message to Parent</button>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Task List</h2>
-          <div id="listOfChores"></div>
-          Name of task:
-          <input id="new-task" type="text">
-          <br>
-          Priority (5 - high, 1 - low):
-          <select id="priority">
-            <option value="5">5</option>
-            <option value="4">4</option>
-            <option value="3">3</option>
-            <option value="2">2</option>
-            <option value="1">1</option>
-          </select>
-          <br>
-          Difficulty (5 - high, 1 - low):
-          <select id="difficulty">
-            <option value="5">5</option>
-            <option value="4">4</option>
-            <option value="3">3</option>
-            <option value="2">2</option>
-            <option value="1">1</option>
-          </select>
-          <br>
-          <!-- <button id="addTask">Add!</button>
-          <ul id="tasks"></ul> -->
+        <div class="row">
+          <div class="col-md-12">
+            <div id="rewards">
+              <h2>Reward List:</h2>
+              <ul id="reward-requests"></ul>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Task List</h2>
+            <div id="kidTasks">
+              <!--Temp removal of kid create task, not needed for MVP-->
+              <!--<div id="listOfChores"></div>
+              Name of task:
+              <input id="new-task" type="text">
+              <br>
+              Priority (5 - high, 1 - low):
+              <select id="priority">
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+              </select>
+              <br>
+             Difficulty (5 - high, 1 - low):
+              <select id="difficulty">
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+              </select>
+              <br>
+              <button id="addTask">Add!</button>-->
+            </div>
+          </div>
+        </div>
       <hr>
-    </body>
-  </html>
+    </div>
+  </body>
+</html>
 
       <!--
     <script type="text/javascript" src="./assets/javascript/kids.js">

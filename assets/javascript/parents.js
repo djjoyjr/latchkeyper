@@ -18,7 +18,6 @@ $(document).ready( function(){
 
       //Function create user
       const createUser = function (userID, userName, email){
-        console.log(userID, userName, email);
         dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}});
         //dbRefRoot.child(userID).update({"children": null});
         //dbRefRoot.child(userID).update({"messages": null});
@@ -42,12 +41,16 @@ $(document).ready( function(){
         	//Takes snapshot of dbRoot
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
+<<<<<<< HEAD
             	if (snapshot.hasChild(currentUser.uid)) {
            			console.log("User exists in DB");
+=======
+
+            	if (snapshot.hasChild(currentUser.uid)) {
+>>>>>>> e50b36484fb2021b37cf1fd286600d143a38f7b3
             	}
             	//If not, runs createUser which adds their user data to the database
             	else {
-              		console.log("This user does not exist in the DB yet")
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);
             		}
           	});
@@ -67,17 +70,44 @@ $(document).ready( function(){
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
+    			if(snapshot.val().done){}
+    			else{
 				var newChore = $('<div></div>'); //Creates new div
-				newChore.html("<p class='chores'>"+snapshot.key+"</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+				var points = snapshot.val().Total;
+				newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
 				newChore.addClass("chores");
 				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfChores").append(newChore);
+				}
 			});
 
 			//Updates listOfChores on chore removal
 			dbRefChores.on('child_removed', function(snapshot){
 				const choreRemove = $("#"+shapshot.key);
 				choreRemove.remove();
+			});
+
+			//Generate dropdown list of children
+			var list = $("#forWhom");
+			$('<option />', {value: "All", text: "All"}).appendTo(list);
+			dbRefKids.on("value", function(snapshot){
+				snapshot.forEach(function(child){
+					var name = child.key;
+					$('<option />', {value: name, text: name}).appendTo(list);
+				});
+			});
+
+			//Updates complete with completed chores
+			dbRefChores.on('child_added', function(snapshot){
+				console.log(snapshot.val().done);
+				if(snapshot.val().done){
+					var newChore = $('<div></div>'); //Creates new div
+					var points = snapshot.val().Total;
+					newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+					newChore.addClass("done");
+					newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
+				$("#complete").append(newChore);
+				}
 			});
 
         }
@@ -112,12 +142,13 @@ $(document).ready( function(){
       	var prioPoints = parseInt($("#priority").val());
       	var diffPoints = parseInt($("#difficulty").val());
       	var totPoints = prioPoints + diffPoints;
+      	var whoDo = $("#forWhom").val();
       	var dbRefUser = dbRefRoot.child(activeUser);
       		if(dbRefUser.child("chores")){
-      			dbRefUser.child("chores").update({[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints}})
+      			dbRefUser.child("chores").update({[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints, "For": whoDo}})
       		}
       		else {
-      			dbRefUser.update({"chores":{[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints}}})
+      			dbRefUser.update({"chores":{[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints, "For": whoDo}}})
       		}
       });
 
@@ -137,7 +168,9 @@ $(document).ready( function(){
 
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
-      	console.log("I removed " +this.id);
+      	var dbRefUser = dbRefRoot.child(activeUser);
+      	var dbRefChores = dbRefUser.child("chores");
+      	dbRefChores.child(this.id).remove();
       });
 
 

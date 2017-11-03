@@ -7,7 +7,7 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
       <link rel="stylesheet" href="./assets/css/style.css">
       <title>Latchkeyper Parents Page</title>
-    <style> p{ display: inline-block; } </style>
+    <style> p{ display: inline-block; margin: 20px; } </style>
     </head>
     <body class="body">
       <nav class="navbar navbar-light bg-light">
@@ -72,6 +72,10 @@
               <option value="1">1</option>
             </select>
             <br>
+            Assign Chore to:
+            <select id="forWhom">
+            </select>
+            <br>
             <button id="addTask">Add!</button>
             <ul id="tasks"></ul>
           </div>
@@ -84,10 +88,14 @@
 
           </ol>
         </p>
-        
-        <hr>
 
-        <div class="row content-center" id="ADDIDHERELATER"></div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Completed Tasks</h2>
+              <div id="complete"></div>
+          </div>
+        </div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
@@ -98,9 +106,7 @@
 
       <!--adds d3 library  -->
 <script>
-
         <!-- <script src="http://d3js.org/d3.v3.js"> -->
-
 //-----------------------------functions go here--------------------------------
 //this writes to the jumbotron on this page, but will need to write to the kids page eventually
 function messageChild () {
@@ -115,15 +121,9 @@ function addTask() {
 function removeTask() {
   $(this).closest("div").remove();
 }
-
-
-
-
 //---------------event listening ---------------------------------
 $("#message-child-button").click(messageChild);
 // $("#task-list-button").click(addTask);
-
-
 $("#add").click(addTask);
 $(document).on("click", "#delete", removeTask);
 $("input").keypress(function(event) {
@@ -133,9 +133,6 @@ $("input").keypress(function(event) {
     addTask();
   }
 });
-
-
-
         </script>
         <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script type="text/javascript" src="./assets/javascript/latchkeyper.js"> -->

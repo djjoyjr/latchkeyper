@@ -1,6 +1,9 @@
 <!DOCTYPE html>
   <html>
     <head>
+      <!--chart.js-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+
       <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="./assets/javascript/parents.js"></script>
@@ -26,7 +29,7 @@
         </div><!--End row-->
         <div class="row">
           <div class="col-md-12" id="parent-controls">
-            <button type="button" class="btn btn-primary" id="message-child-button">Message to Child</button>
+            <!-- <button type="button" class="btn btn-primary" id="message-child-button">Message to Child</button> -->
             <!-- <button type="button" class="btn btn-primary" id="assign-task-button">Assign a Task</button> -->
             <button type="button" class="btn btn-primary" id="manage-points-button">Manage Points</button>
             <button type="button" class="btn btn-primary" id="respond-to-request-button">Respond to a Request</button>
@@ -40,15 +43,15 @@
                 <h2>Children</h2>
                 <div id="listOfKids"></div>
                 <div>Add a Child:
-                  <input type="text" id="childName" class="togChild" placeholder="Enter Child's Name">
-                  <button id="submitChild" class="togChild">Submit</button>
+                  <input type="text" id="childName" placeholder="Enter Child's Name">
+                  <button id="submitChild">Submit</button>
                 </div>
                 <hr>
             </div>
           </div><!--End column-->
         </div><!--End row-->
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <h2>Task List</h2>
             <div id="listOfChores"></div>
             Name of task:
@@ -79,6 +82,11 @@
             <button id="addTask">Add!</button>
             <ul id="tasks"></ul>
           </div>
+          <div class="col-md-6">
+            <h2>Reward Requests</h2>
+            <div id="reward-requests"></div>
+
+          </div>
         </div>
 
 
@@ -94,7 +102,36 @@
           <div class="col-md-12">
             <h2>Completed Tasks</h2>
               <div id="complete"></div>
-          </div>
+
+
+          <!--chart-->
+
+          <canvas id="bar-chart" width="600" height="350"></canvas>
+          <canvas id="chart"></canvas>
+
+          <div class="card text-center">
+        <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Prob Not Mine</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">The Special One</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">The Ugly One</a>
+        </li>
+        </ul>
+        </div>
+        <div class="card-body">
+        <h4 class="card-title">Most Recent Message:</h4>
+        <p class="card-text">Updates to or from spawn</p>
+        <a href="#" class="btn btn-primary">Read</a>
+        </div>
+        </div>
+        <!--end chart-->
+
+        </div>
         </div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
@@ -102,40 +139,9 @@
 
 
 
+
       </div>
 
-      <!--adds d3 library  -->
-<script>
-        <!-- <script src="http://d3js.org/d3.v3.js"> -->
-//-----------------------------functions go here--------------------------------
-//this writes to the jumbotron on this page, but will need to write to the kids page eventually
-function messageChild () {
-  var msg = prompt("Enter your message:");
-  $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-}
-function addTask() {
-  var task = $("#new-task").val();
-  $("#tasks").append("<div>" + task + "<span id='delete'>X</span></div>");
-  $("#new-task").val("");
-}
-function removeTask() {
-  $(this).closest("div").remove();
-}
-//---------------event listening ---------------------------------
-$("#message-child-button").click(messageChild);
-// $("#task-list-button").click(addTask);
-$("#add").click(addTask);
-$(document).on("click", "#delete", removeTask);
-$("input").keypress(function(event) {
-  // listen to see that key was "enter."
-  if (event.which === 13) {
-    // If so, run addTask.
-    addTask();
-  }
-});
-        </script>
-        <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script type="text/javascript" src="./assets/javascript/latchkeyper.js"> -->
-    <!-- </script> -->
+
     </body>
   </html>

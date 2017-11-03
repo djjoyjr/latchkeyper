@@ -105,6 +105,7 @@ $(document).ready(function() {
       }
     };
 
+    //Generate dropdown list of children for check in
     var checklist = $("#whoCheckIn");
     dbRefKids.once("value", function(snapshot) {
       snapshot.forEach(function(kidsnap) {
@@ -127,6 +128,7 @@ $(document).ready(function() {
           }).appendTo(requestlist);
         });
       });
+
 
       //Generate task div for each child of "children"
       var kidsTasks = $("#kidTasks");
@@ -166,6 +168,7 @@ $(document).ready(function() {
           }
         });
       });
+
 
 
 

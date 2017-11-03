@@ -41,11 +41,22 @@ $(document).ready( function(){
         	//Takes snapshot of dbRoot
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
+<<<<<<< HEAD
+
+            	if (snapshot.hasChild(currentUser.uid)) {
+           			console.log("User exists in DB");
+              }
+
+            	// if (snapshot.hasChild(currentUser.uid)) {
+              //
+            	// }
+=======
             	if (snapshot.hasChild(currentUser.uid)) {
            			console.log("User exists in DB");
               }
             	if (snapshot.hasChild(currentUser.uid)) {
             	}
+>>>>>>> a47fe1058ca484ca336ef2486109fcee800b5651
             	//If not, runs createUser which adds their user data to the database
             	else {
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);
@@ -64,7 +75,27 @@ $(document).ready( function(){
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
+        console.log();
 			});
+
+      //enables on click listen for dynamically created buttons
+      $('#children').on('click', "button", function() {
+        var dm = prompt("Enter your message:");
+        dbRefKids.child(this.id).push(dm);
+      });
+
+      //populates Rewards Div from db
+        dbRefKids.on('child_added', function(snapshot){
+        var rewardRequest = $('<div></div>'); //Creates new div
+        rewardRequest.addClass("reward-request");
+        rewardRequest.html(snapshot);
+        rewardRequest.attr("id", snapshot); //Sets id equal to key name of key:value pair
+        $("#reward-request").append(rewardRequest);
+        console.log(snapshot.key);
+      });
+
+
+
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
@@ -96,7 +127,7 @@ $(document).ready( function(){
 			});
 			//Updates complete with completed chores
 			dbRefChores.on('child_added', function(snapshot){
-				console.log(snapshot.val().done);
+				// console.log(snapshot.val().done);
 				if(snapshot.val().done){
 					var newChore = $('<div></div>'); //Creates new div
 					var points = snapshot.val().Total;
@@ -149,19 +180,6 @@ $(document).ready( function(){
       		}
       });
 
-      //onClick of addMessage
-      $("#message-child-button").click(messageChild);
-      function messageChild () {
-        var msg = prompt("Enter your message:");
-        var dbRefUser = dbRefRoot.child(activeUser);
-            if(dbRefUser.child("messages")){
-              dbRefUser.child("mesages").push(msg);
-            }
-            else {
-              dbRefUser.push({"messages":msg});
-            }
-        $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-      };
 
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
@@ -170,9 +188,6 @@ $(document).ready( function(){
       	dbRefChores.child(this.id).remove();
       });
 
-
-
-      //Ani is learning
 
       firebase.auth().onAuthStateChanged(function(currentUser){
 
@@ -189,7 +204,21 @@ $(document).ready( function(){
           var diffArray = [];
           var prioArray = [];
           var totalArray = [];
+          var dates = [];
 
+
+//start timestamp
+// var firebaseRef = firebase.database().ref();
+// firebaseRef.update({
+//    createdAt: firebase.database.ServerValue.TIMESTAMP
+// });
+//
+// console.log(firebaseRef);
+
+var currentdate;
+var datetime;
+
+//end timestamp
 
        dbRefChores.on('value', function(snapshot){
           snapshot.forEach(function(child){
@@ -197,17 +226,128 @@ $(document).ready( function(){
              prio = child.val().Prio;
              total = child.val().Total;
 
+
+             var currentdate = new Date();
+             var datetime =
+            currentdate.getDate() + "/"
+                             + (currentdate.getMonth()+1)  + "/"
+                             + currentdate.getFullYear() + " @ "
+                             + currentdate.getHours() + ":"
+                             + currentdate.getMinutes() + ":"
+                             + currentdate.getSeconds();
+
+                             console.log(datetime);
+                             dates.push(datetime);
+
             // console.log(child.val().Total);
             // console.log(child.val().Diff);
             // console.log(child.val().Prio);
             diffArray.push(diff);
-            console.log(diffArray);
+            // console.log(diffArray);
 
             prioArray.push(prio);
-            console.log(prioArray);
+            // console.log(prioArray);
 
             totalArray.push(total);
             console.log(totalArray);
+
+            //start chart data
+            var numberWithCommas = function(x) {
+              return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            };
+
+            // var difficulty = [21000, 22000, 26000, 35000, 55000, 55000, 56000, 59000, 60000, 61000, 60100, 62000];
+            // var priority = [1000, 1200, 1300, 1400, 1060, 2030, 2070, 4000, 4100, 4020, 4030, 4050];
+            //
+            var time= [5, 6, 1, 3, 10, 8, 4, ];
+
+             var total = [];
+            for (var i=0; i < time.length; i++){
+            total.push(diffArray[i] + prioArray[i] + time[i]);
+            }
+
+
+
+            console.log(total);
+
+
+
+
+            // Chart.defaults.global.elements.rectangle.backgroundColor = '#FF0000';
+
+            var bar_ctx = document.getElementById('bar-chart');
+            var bar_chart = new Chart(bar_ctx, {
+              type: 'bar',
+              data: {
+                  labels: dates,
+                  datasets: [
+                  {
+                      label: 'Difficulty',
+                      data: diffArray,
+                     backgroundColor: "rgba(55, 160, 225, 0.7)",
+                     hoverBackgroundColor: "rgba(55, 160, 225, 0.7)",
+                     hoverBorderWidth: 2,
+                     hoverBorderColor: 'lightgrey'
+                  },
+                  {
+                      label: 'Priority',
+                      data: prioArray,
+                     backgroundColor: "rgba(225, 58, 55, 0.7)",
+                     hoverBackgroundColor: "rgba(225, 58, 55, 0.7)",
+                     hoverBorderWidth: 2,
+                     hoverBorderColor: 'lightgrey'
+                  },
+                  {
+                    label: 'Time',
+                    data: time,
+                    backgroundColor: "rgba(230, 72, 104, 0.7)",
+                      hoverBackgroundColor: "rgba(230, 72, 104, 0.7)",
+                      hoverBorderWidth: 2,
+                      hoverBorderColor: 'lightgrey'
+
+                  },
+                  {
+                    label: 'Total',
+                    data: total,
+
+                    backgroundColor: "rgba(230, 72, 104, 0.7)",
+                      hoverBackgroundColor: "rgba(230, 72, 104, 0.7)",
+                      hoverBorderWidth: 2,
+                      hoverBorderColor: 'lightgrey'
+                  },
+                  ]
+              },
+              options: {
+                   animation: {
+                   duration: 10,
+                  },
+                  tooltips: {
+                   mode: 'label',
+                    callbacks: {
+                    label: function(tooltipItem, data) {
+                     return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+
+                    }
+                    }
+                   },
+                  scales: {
+                    xAxes: [{
+                     stacked: true,
+                      gridLines: { display: false },
+                      }],
+                    yAxes: [{
+                     stacked: true,
+                      ticks: {
+                       callback: function(value) { return numberWithCommas(value); },
+                       },
+                      }],
+                  }, // scales
+                  legend: {display: true}
+              } // options
+             });
+
+
+            //end chart
           });
 
 
@@ -219,32 +359,7 @@ $(document).ready( function(){
 
   });
 
-//first way
-    // var ref = database.ref('/zFGdoWqKYbhN3gpKZiX3TSj24WW2/chores/Clean the inside of the microwave/Total');
-    // ref.on('value', gotData, errorData);
-    //
-    // function gotData(data) {
-    //     console.log(data.val());
-    //     var total = data.val();
-    //     console.log(total);
-    //     var keys = Object.keys(total);
-    //     console.log(keys);
-    //       for (var i = 0; i< keys.length; i++){
-    //         var k = keys[i];
-    //         var initials = total[k].Total;
-    //         var score = total[k].score;
-    //         console.log(Total, score);
-    //
-    //         var li = document.createElement('li', total );
-    //         li.parent('scoreChart');
-    //       }
-    // }
-    //
-    // function errorData(err) {
-    //   console.log('error!');
-    //   console.log(err);
-    // }
-//end first way
+
 
 //end Ani Learning
 });//End of document.ready

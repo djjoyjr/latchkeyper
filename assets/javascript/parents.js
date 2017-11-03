@@ -18,7 +18,6 @@ $(document).ready( function(){
 
       //Function create user
       const createUser = function (userID, userName, email){
-        console.log(userID, userName, email);
         dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}});
         //dbRefRoot.child(userID).update({"children": null});
         //dbRefRoot.child(userID).update({"messages": null});
@@ -42,12 +41,11 @@ $(document).ready( function(){
         	//Takes snapshot of dbRoot
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
-            	if (snapshot.hasChild(currentUser.uid)) {
-           			console.log("User exists in DB");
+
+            	if (snapshot.hasChild(currentUser.uid)) { 
             	}
             	//If not, runs createUser which adds their user data to the database
             	else {
-              		console.log("This user does not exist in the DB yet")
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);
             		}
           	});
@@ -67,11 +65,15 @@ $(document).ready( function(){
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
+    			if(snapshot.val().done){}
+    			else{
 				var newChore = $('<div></div>'); //Creates new div
-				newChore.html("<p class='chores'>"+snapshot.key+"</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+				var points = snapshot.val().Total;
+				newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
 				newChore.addClass("chores");
 				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfChores").append(newChore);
+				}
 			});
 
 			//Updates listOfChores on chore removal
@@ -88,6 +90,19 @@ $(document).ready( function(){
 					var name = child.key;
 					$('<option />', {value: name, text: name}).appendTo(list);
 				});
+			});
+
+			//Updates complete with completed chores
+			dbRefChores.on('child_added', function(snapshot){
+				console.log(snapshot.val().done);
+				if(snapshot.val().done){
+					var newChore = $('<div></div>'); //Creates new div
+					var points = snapshot.val().Total;
+					newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+					newChore.addClass("done");
+					newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
+				$("#complete").append(newChore);
+				}
 			});
 
         }

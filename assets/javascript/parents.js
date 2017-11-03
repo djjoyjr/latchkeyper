@@ -112,9 +112,9 @@ $(document).ready( function(){
 					$('<option />', {value: name, text: name}).appendTo(list);
 				});
 			});
+
 			//Updates complete with completed chores
 			dbRefChores.on('child_added', function(snapshot){
-				// console.log(snapshot.val().done);
 				if(snapshot.val().done){
 					var newChore = $('<div></div>'); //Creates new div
 					var points = snapshot.val().Total;
@@ -173,6 +173,13 @@ $(document).ready( function(){
       	var dbRefUser = dbRefRoot.child(activeUser);
       	var dbRefChores = dbRefUser.child("chores");
       	dbRefChores.child(this.id).remove();
+      });
+
+      //onClick of removeChore
+      $("#complete").on("click", "button", function(){
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefChores = dbRefUser.child("chores");
+        dbRefChores.child(this.id).remove();
       });
 
 

@@ -39,7 +39,7 @@
             <div id="children">
                 <h2>Children</h2>
                 <div id="listOfKids"></div>
-                <div>Add a Child: 
+                <div>Add a Child:
                   <input type="text" id="childName" class="togChild" placeholder="Enter Child's Name">
                   <button id="submitChild" class="togChild">Submit</button>
                 </div>
@@ -72,7 +72,7 @@
               <option value="1">1</option>
             </select>
             <br>
-            Assign Chore to: 
+            Assign Chore to:
             <select id="forWhom">
             </select>
             <br>
@@ -94,9 +94,7 @@
 
       <!--adds d3 library  -->
 <script>
-
         <!-- <script src="http://d3js.org/d3.v3.js"> -->
-
 //-----------------------------functions go here--------------------------------
 //this writes to the jumbotron on this page, but will need to write to the kids page eventually
 function messageChild () {
@@ -111,15 +109,9 @@ function addTask() {
 function removeTask() {
   $(this).closest("div").remove();
 }
-
-
-
-
 //---------------event listening ---------------------------------
 $("#message-child-button").click(messageChild);
 // $("#task-list-button").click(addTask);
-
-
 $("#add").click(addTask);
 $(document).on("click", "#delete", removeTask);
 $("input").keypress(function(event) {
@@ -129,9 +121,6 @@ $("input").keypress(function(event) {
     addTask();
   }
 });
-
-
-
         </script>
         <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script type="text/javascript" src="./assets/javascript/latchkeyper.js"> -->

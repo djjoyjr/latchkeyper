@@ -135,15 +135,19 @@ $(document).ready(function() {
       var kid;
       var newDiv;
       var newTitle;
+      var dispPoints;
       dbRefKids.once("value", function(snapshot){
         snapshot.forEach( function(divsnap) {
+          dispPoints = divsnap.val().points;
           kid = divsnap.key;
           newDiv = $("<div></div>");
           newTitle = $("<h2></h2>");
+          newSub = $("<h4></h4>");
           newTitle.text(kid + "'s Tasks");
-          newDiv.attr("id", kid);
+          newSub.text("Point Total: "+dispPoints)
+          newDiv.attr("id", "div"+kid);
           newTitle.appendTo(kidsTasks);
-          console.log("New div made for "+ kid);
+          newSub.appendTo(kidsTasks);
           newDiv.appendTo(kidsTasks);
         });
       });
@@ -152,7 +156,7 @@ $(document).ready(function() {
       var taskDiv;
       var points;
       var who;
-      dbRefChores.on("value", function(snapshot){
+      dbRefChores.once("value", function(snapshot){
         snapshot.forEach(function(tasksnap){
           if(tasksnap.val().done){}
           else {
@@ -160,13 +164,34 @@ $(document).ready(function() {
           points = tasksnap.val().Total;
           who = tasksnap.val().For;
           console.log(who);
-          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='finChore' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
-          taskDiv.addClass("chore-div");
-          taskDiv.attr("id", tasksnap.key);
+          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
+          taskDiv.addClass("chores");
+          taskDiv.attr("id", "chore-div");
           console.log(taskDiv);
-          $(taskDiv).appendTo('#'+who);
+          $(taskDiv).appendTo('#div'+who);
           }
         });
+      });
+
+      //onClick of Complete Chore
+      $("#kidTasks").on("click", "button", function() {
+        var kid = this.className;
+        console.log(kid);
+        var chore = this.id;
+        var pointsAdd;
+        var pointTotal;
+        dbRefChores.child(chore).update({"done": true});
+        dbRefChores.once("value", function(snapshot){
+            pointsAdd = snapshot.child(chore).val().Total;
+            console.log(pointsAdd);
+        });
+        dbRefKids.once("value",function(snapshot){
+          pointTotal =snapshot.child(kid).val().points;
+          pointTotal += pointsAdd;
+          console.log(pointTotal);
+          dbRefKids.child(kid).update({"points": pointTotal});
+        });
+    
       });
 
 
@@ -236,7 +261,11 @@ $(document).ready(function() {
 
   //onClick of removeChore
   $("#listOfChores").on("click", "button", function() {
-    console.log("I removed " + this.id);
+    var dbRefUser = dbRefRoot.child(activeUser);
+    var dbRefChores = dbRefUser.child("chores");
+    dbRefChores.child(this.id).remove();
   });
+
+  
 
 }); //End of document.ready

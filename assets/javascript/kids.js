@@ -128,6 +128,75 @@ $(document).ready(function() {
           }).appendTo(requestlist);
         });
       });
+
+
+      //Generate task div for each child of "children"
+      var kidsTasks = $("#kidTasks");
+      var kid;
+      var newDiv;
+      var newTitle;
+      var dispPoints;
+      dbRefKids.once("value", function(snapshot){
+        snapshot.forEach( function(divsnap) {
+          dispPoints = divsnap.val().points;
+          kid = divsnap.key;
+          newDiv = $("<div></div>");
+          newTitle = $("<h2></h2>");
+          newSub = $("<h4></h4>");
+          newTitle.text(kid + "'s Tasks");
+          newSub.text("Point Total: "+dispPoints)
+          newDiv.attr("id", "div"+kid);
+          newTitle.appendTo(kidsTasks);
+          newSub.appendTo(kidsTasks);
+          newDiv.appendTo(kidsTasks);
+        });
+      });
+
+      //Populate each child's section with their tasks
+      var taskDiv;
+      var points;
+      var who;
+      dbRefChores.once("value", function(snapshot){
+        snapshot.forEach(function(tasksnap){
+          if(tasksnap.val().done){}
+          else {
+          taskDiv = $("<div></div>");
+          points = tasksnap.val().Total;
+          who = tasksnap.val().For;
+          console.log(who);
+          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
+          taskDiv.addClass("chores");
+          taskDiv.attr("id", "chore-div");
+          console.log(taskDiv);
+          $(taskDiv).appendTo('#div'+who);
+          }
+        });
+      });
+
+      //onClick of Complete Chore
+      $("#kidTasks").on("click", "button", function() {
+        var kid = this.className;
+        console.log(kid);
+        var chore = this.id;
+        var pointsAdd;
+        var pointTotal;
+        dbRefChores.child(chore).update({"done": true});
+        dbRefChores.once("value", function(snapshot){
+            pointsAdd = snapshot.child(chore).val().Total;
+            console.log(pointsAdd);
+        });
+        dbRefKids.once("value",function(snapshot){
+          pointTotal =snapshot.child(kid).val().points;
+          pointTotal += pointsAdd;
+          console.log(pointTotal);
+          dbRefKids.child(kid).update({"points": pointTotal});
+        });
+    
+      });
+
+
+
+
   });
 
   // //this writes to the jumbotron on this page, but will need to write to the parents page eventually
@@ -192,7 +261,11 @@ $(document).ready(function() {
 
   //onClick of removeChore
   $("#listOfChores").on("click", "button", function() {
-    console.log("I removed " + this.id);
+    var dbRefUser = dbRefRoot.child(activeUser);
+    var dbRefChores = dbRefUser.child("chores");
+    dbRefChores.child(this.id).remove();
   });
+
+  
 
 }); //End of document.ready

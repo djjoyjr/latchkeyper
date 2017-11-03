@@ -44,12 +44,6 @@ $(document).ready( function(){
             	if (snapshot.hasChild(currentUser.uid)) {
            		// 	console.log("User exists in DB");
               }
-
-            	if (snapshot.hasChild(currentUser.uid)) {
-           		// 	console.log("User exists in DB");
-              }
-            	if (snapshot.hasChild(currentUser.uid)) {
-            	}
             	//If not, runs createUser which adds their user data to the database
             	else {
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);
@@ -197,7 +191,31 @@ $(document).ready( function(){
       firebase.auth().onAuthStateChanged(function(currentUser){
 
     database = firebase.database();
+     if (currentUser) {
+      var spawnName;
+      var spawnArray = [];
 
+      var dbRefRoot = firebase.database().ref();
+      var dbRefUser = dbRefRoot.child(currentUser.uid);
+      var dbRefChildren = dbRefUser.child("children");
+
+
+
+      dbRefChildren.on('value', function(snapshot) {
+        // console.log("snapshot",snapshot)
+        snapshot.forEach(function(child) {
+          spawnName = child.key;
+
+          spawnArray.push(spawnName);
+          console.log(spawnArray);
+        });
+
+        $('#nameOne').html(spawnArray[0]);
+        $('#nameTwo').html(spawnArray[1]);
+        $('#nameThree').html(spawnArray[2]);
+      });
+
+    }
      if(currentUser) {
           var dbRefRoot = firebase.database().ref();
           var dbRefUser = dbRefRoot.child(currentUser.uid);
@@ -211,14 +229,6 @@ $(document).ready( function(){
           var totalArray = [];
           var dates = [];
 
-
-//start timestamp
-// var firebaseRef = firebase.database().ref();
-// firebaseRef.update({
-//    createdAt: firebase.database.ServerValue.TIMESTAMP
-// });
-//
-// console.log(firebaseRef);
 
 var currentdate;
 var datetime;

@@ -41,22 +41,15 @@ $(document).ready( function(){
         	//Takes snapshot of dbRoot
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
-<<<<<<< HEAD
-
             	if (snapshot.hasChild(currentUser.uid)) {
-           			console.log("User exists in DB");
+           		// 	console.log("User exists in DB");
               }
 
-            	// if (snapshot.hasChild(currentUser.uid)) {
-              //
-            	// }
-=======
             	if (snapshot.hasChild(currentUser.uid)) {
-           			console.log("User exists in DB");
+           		// 	console.log("User exists in DB");
               }
             	if (snapshot.hasChild(currentUser.uid)) {
             	}
->>>>>>> a47fe1058ca484ca336ef2486109fcee800b5651
             	//If not, runs createUser which adds their user data to the database
             	else {
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);
@@ -75,7 +68,7 @@ $(document).ready( function(){
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
-        console.log();
+        // console.log();
 			});
 
       //enables on click listen for dynamically created buttons
@@ -84,17 +77,30 @@ $(document).ready( function(){
         dbRefKids.child(this.id).push(dm);
       });
 
-      //populates Rewards Div from db
+      //Creates buttons for each requested reward from db
         dbRefKids.on('child_added', function(snapshot){
         var rewardRequest = $('<div></div>'); //Creates new div
-        rewardRequest.addClass("reward-request");
-        rewardRequest.html(snapshot);
-        rewardRequest.attr("id", snapshot); //Sets id equal to key name of key:value pair
-        $("#reward-request").append(rewardRequest);
-        console.log(snapshot.key);
+        var request = snapshot.val().reward;
+        rewardRequest.addClass("rewardButtonClass");
+        rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
+        rewardRequest.attr("id",snapshot.key);
+        $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+request+'</button>');
       });
 
+      //Removes request from db on click
+      $("#reward-requests").on("click", "button", function(){
+        var dbRefUser = dbRefRoot.child(activeUser);
+        // console.log(dbRefUser.key)
+      	var dbRefKids = dbRefUser.child("children");
+        // console.log(dbRefKids.key);
+        console.log(this.id);
+        var kid = this.id;
+        var dbRefRewards = dbRefKids.child(kid);
+        dbRefRewards.child("reward").remove();
 
+        //dbRefRewards.child(thing).remove();
+
+      });
 
 
 			//Updates listOfChores when chore added (or on load)
@@ -118,7 +124,6 @@ $(document).ready( function(){
 
 			//Generate dropdown list of children
 			var list = $("#forWhom");
-			$('<option />', {value: "All", text: "All"}).appendTo(list);
 			dbRefKids.once("value", function(snapshot){
 				snapshot.forEach(function(child){
 					var name = child.key;

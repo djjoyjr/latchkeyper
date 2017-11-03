@@ -73,14 +73,14 @@ $(document).ready( function(){
 
       //Creates buttons for each requested reward from db
         dbRefKids.on('child_added', function(snapshot){
-          if(snapshot.val().reward){
-        var rewardRequest = $('<div></div>'); //Creates new div
-        var request = snapshot.val().reward;
-        rewardRequest.addClass("rewardButtonClass");
-        rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
-        rewardRequest.attr("id",snapshot.key);
-        $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+request+'</button>');
-        }
+          if (snapshot.val().reward) {
+            var rewardRequest = $('<div></div>'); //Creates new div
+            var request = snapshot.val().reward;
+            rewardRequest.addClass("rewardButtonClass");
+            rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
+            rewardRequest.attr("id",snapshot.key);
+            $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+request+'</button>');
+          };
       });
 
       //Removes request from db on click
@@ -336,7 +336,7 @@ var datetime;
 
                     backgroundColor: "rgba(230, 72, 104, 0)",
                       hoverBackgroundColor: "rgba(230, 72, 104, 0)",
-                      
+
                   },
                   ]
               },

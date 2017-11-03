@@ -75,17 +75,28 @@ $(document).ready( function(){
         $("#check-in-button").click(checkIn);
         function checkIn () {
           var checkingIn = new Date();
-          var kidname = firebase.database().ref().child.val;
+          var kidname = $("#forWhom").val();
           console.log(kidname);
           var dbRefKids = dbRefUser.child("children");
             if(dbRefKids.child(kidname)){
-              dbRefKids.child(kidname).update({[kidname]:{"checkIn": checkingIn}});
+              dbRefKids.child(kidname).update({"checkIn": checkingIn});
             }
             else {
-              dbRefKids.update({kidname:{[kidname]:{"checkIn": checkingIn}}});
+              dbRefKids.update({kidname:{"checkIn": checkingIn}});
             }
-          // $("#messages").append("<div> Your child checked in at home at:  " + checkingIn + "<span id='delete'>X</span></div>");
+            $("#forWhom").html("");
         };
+        //Generate dropdown list of children
+  			var list = $("#forWhom");
+  			dbRefKids.on("value", function(snapshot){
+  				snapshot.forEach(function(child){
+  					var name = child.key;
+  					$('<option />', {value: name, text: name}).appendTo(list);
+  				});
+  			});
+
+
+
 
         // $("#request-reward-button").click(requestReward);
         //

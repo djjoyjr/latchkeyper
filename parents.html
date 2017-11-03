@@ -11,13 +11,13 @@
     </head>
     <body class="body">
       <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1"><a href="index.html">Latchkeyper</a></span>
+        <span class="navbar-brand mb-0 h1"><a class="latchLink" href="index.html">Latchkeyper</a></span>
         <button id="btnSignOut" class="btn btn-dark navbar-right">Sign Out</button>
       </nav>
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <div class="jumbotron">
+            <div class="jumbotron welcometron">
               <h1 id="welcome"></h1>
               <hr>
               <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
@@ -80,6 +80,15 @@
             <ul id="tasks"></ul>
           </div>
         </div>
+
+
+        <!--Scorechart-->
+        <p>
+          <ol id="scoreChart">
+
+          </ol>
+        </p>
+
         <hr>
         <div class="row">
           <div class="col-md-12">
@@ -90,6 +99,9 @@
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
+
+
+
       </div>
 
       <!--adds d3 library  -->

@@ -128,6 +128,46 @@ $(document).ready(function() {
         });
       });
 
+      //Generate task div for each child of "children"
+      var kidsTasks = $("#kidTasks");
+      var kid;
+      var newDiv;
+      var newTitle;
+      dbRefKids.once("value", function(snapshot){
+        snapshot.forEach( function(divsnap) {
+          kid = divsnap.key;
+          newDiv = $("<div></div>");
+          newTitle = $("<h2></h2>");
+          newTitle.text(kid + "'s Tasks");
+          newDiv.attr("id", kid);
+          newTitle.appendTo(kidsTasks);
+          console.log("New div made for "+ kid);
+          newDiv.appendTo(kidsTasks);
+        });
+      });
+
+      //Populate each child's section with their tasks
+      var taskDiv;
+      var points;
+      var who;
+      dbRefChores.on("value", function(snapshot){
+        snapshot.forEach(function(tasksnap){
+          if(tasksnap.val().done){}
+          else {
+          taskDiv = $("<div></div>");
+          points = tasksnap.val().Total;
+          who = tasksnap.val().For;
+          console.log(who);
+          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='finChore' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
+          taskDiv.addClass("chore-div");
+          taskDiv.attr("id", tasksnap.key);
+          console.log(taskDiv);
+          $(taskDiv).appendTo('#'+who);
+          }
+        });
+      });
+
+
 
   });
 

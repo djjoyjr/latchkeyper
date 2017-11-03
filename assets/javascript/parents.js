@@ -73,19 +73,19 @@ $(document).ready( function(){
         dbRefKids.child(this.id).push(dm);
       });
 
-      //onClick of addMessage
-      $("#message-child-button").click(messageChild);
-      function messageChild () {
-        var msg = prompt("Enter your message:");
-        var dbRefUser = dbRefRoot.child(activeUser);
-            if(dbRefUser.child("messages")){
-              dbRefUser.child("mesages").push(msg);
-            }
-            else {
-              dbRefUser.push({"messages":msg});
-            }
-        $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-      };
+      // //onClick of addMessage
+      // $("#message-child-button").click(messageChild);
+      // function messageChild () {
+      //   var msg = prompt("Enter your message:");
+      //   var dbRefUser = dbRefRoot.child(activeUser);
+      //       if(dbRefUser.child("messages")){
+      //         dbRefUser.child("mesages").push(msg);
+      //       }
+      //       else {
+      //         dbRefUser.push({"messages":msg});
+      //       }
+      //   $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+      // };
 
 
 

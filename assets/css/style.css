@@ -11,10 +11,24 @@
   border: solid 2px #436565;
 
 }
+.latchLink{
+  color: #02111b;
+}
+body {
+  background-color: rgb(214, 248, 214);
+}
 
 h1, h4 {
   color: #02111b;
   font-family: 'Spinnaker', sans-serif;
+}
+
+.welcometron, .message{
+  background-color: #fff;
+}
+
+.btn:hover {
+  background-color: #75c6a4;
 }
 
 .nav-link{
@@ -32,7 +46,20 @@ h1, h4 {
 
 .card {
   background-color: #fff;
-  /*rgba(214, 248, 214, .5);*/
   border: none;
-  /*solid 2px #436565;*/
+}
+
+.image-wrapper {
+    position: relative;
+    width: 250px;
+    margin-left: 12%;
+}
+.image-wrapper h1 {
+    position: absolute;
+    left: 120px;
+    top: 0;
+    padding: 10px;
+    width: 218px;
+    color: black;
+    margin: 5px;
 }

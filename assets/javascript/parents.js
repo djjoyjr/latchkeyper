@@ -42,7 +42,7 @@ $(document).ready( function(){
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
 
-            	if (snapshot.hasChild(currentUser.uid)) { 
+            	if (snapshot.hasChild(currentUser.uid)) {
             	}
             	//If not, runs createUser which adds their user data to the database
             	else {
@@ -85,13 +85,12 @@ $(document).ready( function(){
 			//Generate dropdown list of children
 			var list = $("#forWhom");
 			$('<option />', {value: "All", text: "All"}).appendTo(list);
-			dbRefKids.on("value", function(snapshot){
+			dbRefKids.once("value", function(snapshot){
 				snapshot.forEach(function(child){
 					var name = child.key;
 					$('<option />', {value: name, text: name}).appendTo(list);
 				});
 			});
-
 			//Updates complete with completed chores
 			dbRefChores.on('child_added', function(snapshot){
 				console.log(snapshot.val().done);

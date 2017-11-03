@@ -43,6 +43,7 @@ $(document).ready( function(){
             	//If root has a node with the current user's ID, confirms existance in DB
             	if (snapshot.hasChild(currentUser.uid)) {
            			console.log("User exists in DB");
+              }
             	if (snapshot.hasChild(currentUser.uid)) {
             	}
             	//If not, runs createUser which adds their user data to the database
@@ -50,6 +51,7 @@ $(document).ready( function(){
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);
             		}
           	});
+
           	//Database references
     		var dbRefUser = dbRefRoot.child(activeUser);
     		var dbRefKids = dbRefUser.child("children");

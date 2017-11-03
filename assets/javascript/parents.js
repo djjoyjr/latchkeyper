@@ -313,10 +313,9 @@ var datetime;
                     label: 'Total',
                     data: total,
 
-                    backgroundColor: "rgba(230, 72, 104, 0.7)",
-                      hoverBackgroundColor: "rgba(230, 72, 104, 0.7)",
-                      hoverBorderWidth: 2,
-                      hoverBorderColor: 'lightgrey'
+                    backgroundColor: "rgba(230, 72, 104, 0)",
+                      hoverBackgroundColor: "rgba(230, 72, 104, 0)",
+                      
                   },
                   ]
               },

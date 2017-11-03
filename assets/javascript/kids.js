@@ -75,8 +75,7 @@ $(document).ready( function(){
         $("#check-in-button").click(checkIn);
         function checkIn () {
           var checkingIn = new Date();
-          var kidname = $("#forWhom").val();
-          console.log(kidname);
+          var kidname = $(".forWhom").val();
           var dbRefKids = dbRefUser.child("children");
             if(dbRefKids.child(kidname)){
               dbRefKids.child(kidname).update({"checkIn": checkingIn});
@@ -84,10 +83,26 @@ $(document).ready( function(){
             else {
               dbRefKids.update({kidname:{"checkIn": checkingIn}});
             }
-            $("#forWhom").html("");
+            $(".forWhom").html("");
         };
+        $("#request-reward-button").click(requestReward);
+
+        function requestReward () {
+          var rewardRequest = prompt("Request a reward: ");
+          var requester = $(".forWhom").val();
+          console.log(requester);
+          var dbRefKids = dbRefUser.child("children");
+            if(dbRefKids.child(requester)){
+              dbRefKids.child(requester).update({"reward": rewardRequest});
+            }
+            else {
+              dbRefKids.update({requester:{"reward": rewardRequest}});
+            }
+            $(".forWhom").html("");
+        };
+
         //Generate dropdown list of children
-  			var list = $("#forWhom");
+  			var list = $(".forWhom");
   			dbRefKids.on("value", function(snapshot){
   				snapshot.forEach(function(child){
   					var name = child.key;
@@ -95,23 +110,6 @@ $(document).ready( function(){
   				});
   			});
 
-
-
-
-        // $("#request-reward-button").click(requestReward);
-        //
-        // function requestReward () {
-        //   var rewardRequest = prompt("Request a reward: ");
-        //   var requester = dbRefKids.child
-        //   var kidname = $("#childName").val();
-        //   var dbRefKids = dbRefRoot.child(activeUser);
-        //     if(dbRefKids.child("children")){
-        //       dbRefKids.child("children").update({[kidname]:{"reward": rewardRequest}});
-        //     }
-        //     else {
-        //       dbRefKids.update({"children":{[kidname]:{"reward": rewardRequest}}});
-        //     }
-        // };
 
 
 

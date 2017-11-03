@@ -64,7 +64,31 @@ $(document).ready( function(){
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
+        console.log();
 			});
+
+      //enables on click listen for dynamically created buttons
+      $('#children').on('click', "button", function() {
+        var dm = prompt("Enter your message:");
+        dbRefKids.child(this.id).push(dm);
+      });
+
+      //onClick of addMessage
+      $("#message-child-button").click(messageChild);
+      function messageChild () {
+        var msg = prompt("Enter your message:");
+        var dbRefUser = dbRefRoot.child(activeUser);
+            if(dbRefUser.child("messages")){
+              dbRefUser.child("mesages").push(msg);
+            }
+            else {
+              dbRefUser.push({"messages":msg});
+            }
+        $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+      };
+
+
+
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
@@ -96,7 +120,7 @@ $(document).ready( function(){
 			});
 			//Updates complete with completed chores
 			dbRefChores.on('child_added', function(snapshot){
-				console.log(snapshot.val().done);
+				// console.log(snapshot.val().done);
 				if(snapshot.val().done){
 					var newChore = $('<div></div>'); //Creates new div
 					var points = snapshot.val().Total;
@@ -149,19 +173,6 @@ $(document).ready( function(){
       		}
       });
 
-      //onClick of addMessage
-      $("#message-child-button").click(messageChild);
-      function messageChild () {
-        var msg = prompt("Enter your message:");
-        var dbRefUser = dbRefRoot.child(activeUser);
-            if(dbRefUser.child("messages")){
-              dbRefUser.child("mesages").push(msg);
-            }
-            else {
-              dbRefUser.push({"messages":msg});
-            }
-        $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-      };
 
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
@@ -170,9 +181,6 @@ $(document).ready( function(){
       	dbRefChores.child(this.id).remove();
       });
 
-
-
-      //Ani is learning
 
       firebase.auth().onAuthStateChanged(function(currentUser){
 
@@ -197,17 +205,14 @@ $(document).ready( function(){
              prio = child.val().Prio;
              total = child.val().Total;
 
-            // console.log(child.val().Total);
-            // console.log(child.val().Diff);
-            // console.log(child.val().Prio);
             diffArray.push(diff);
-            console.log(diffArray);
+            // console.log(diffArray);
 
             prioArray.push(prio);
-            console.log(prioArray);
+            // console.log(prioArray);
 
             totalArray.push(total);
-            console.log(totalArray);
+            // console.log(totalArray);
           });
 
 
@@ -219,32 +224,4 @@ $(document).ready( function(){
 
   });
 
-//first way
-    // var ref = database.ref('/zFGdoWqKYbhN3gpKZiX3TSj24WW2/chores/Clean the inside of the microwave/Total');
-    // ref.on('value', gotData, errorData);
-    //
-    // function gotData(data) {
-    //     console.log(data.val());
-    //     var total = data.val();
-    //     console.log(total);
-    //     var keys = Object.keys(total);
-    //     console.log(keys);
-    //       for (var i = 0; i< keys.length; i++){
-    //         var k = keys[i];
-    //         var initials = total[k].Total;
-    //         var score = total[k].score;
-    //         console.log(Total, score);
-    //
-    //         var li = document.createElement('li', total );
-    //         li.parent('scoreChart');
-    //       }
-    // }
-    //
-    // function errorData(err) {
-    //   console.log('error!');
-    //   console.log(err);
-    // }
-//end first way
-
-//end Ani Learning
 });//End of document.ready

@@ -105,6 +105,7 @@ $(document).ready(function() {
       }
     };
 
+    //Generate dropdown list of children for check in
     var checklist = $("#whoCheckIn");
     dbRefKids.once("value", function(snapshot) {
       snapshot.forEach(function(kidsnap) {
@@ -127,8 +128,6 @@ $(document).ready(function() {
           }).appendTo(requestlist);
         });
       });
-
-
   });
 
   // //this writes to the jumbotron on this page, but will need to write to the parents page eventually

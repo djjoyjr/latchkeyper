@@ -40,8 +40,8 @@
                 <h2>Children</h2>
                 <div id="listOfKids"></div>
                 <div>Add a Child:
-                  <input type="text" id="childName" class="togChild" placeholder="Enter Child's Name">
-                  <button id="submitChild" class="togChild">Submit</button>
+                  <input type="text" id="childName" placeholder="Enter Child's Name">
+                  <button id="submitChild">Submit</button>
                 </div>
                 <hr>
             </div>
@@ -96,46 +96,8 @@
               <div id="complete"></div>
           </div>
         </div>
- 		    <div class="row content-center" id="ADDIDHERELATER"></div>
- 		    <div class="row content-center" id="ADDIDHERELATER"></div>
- 		    <div class="row content-center" id="ADDIDHERELATER"></div>
-
-
-
       </div>
 
-      <!--adds d3 library  -->
-<script>
-        <!-- <script src="http://d3js.org/d3.v3.js"> -->
-//-----------------------------functions go here--------------------------------
-//this writes to the jumbotron on this page, but will need to write to the kids page eventually
-function messageChild () {
-  var msg = prompt("Enter your message:");
-  $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-}
-function addTask() {
-  var task = $("#new-task").val();
-  $("#tasks").append("<div>" + task + "<span id='delete'>X</span></div>");
-  $("#new-task").val("");
-}
-function removeTask() {
-  $(this).closest("div").remove();
-}
-//---------------event listening ---------------------------------
-$("#message-child-button").click(messageChild);
-// $("#task-list-button").click(addTask);
-$("#add").click(addTask);
-$(document).on("click", "#delete", removeTask);
-$("input").keypress(function(event) {
-  // listen to see that key was "enter."
-  if (event.which === 13) {
-    // If so, run addTask.
-    addTask();
-  }
-});
-        </script>
-        <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script type="text/javascript" src="./assets/javascript/latchkeyper.js"> -->
-    <!-- </script> -->
+
     </body>
   </html>

@@ -41,22 +41,9 @@ $(document).ready( function(){
         	//Takes snapshot of dbRoot
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
-<<<<<<< HEAD
-
             	if (snapshot.hasChild(currentUser.uid)) {
            			console.log("User exists in DB");
               }
-
-            	// if (snapshot.hasChild(currentUser.uid)) {
-              //
-            	// }
-=======
-            	if (snapshot.hasChild(currentUser.uid)) {
-           			console.log("User exists in DB");
-              }
-            	if (snapshot.hasChild(currentUser.uid)) {
-            	}
->>>>>>> a47fe1058ca484ca336ef2486109fcee800b5651
             	//If not, runs createUser which adds their user data to the database
             	else {
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);

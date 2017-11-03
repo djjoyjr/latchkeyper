@@ -1,6 +1,9 @@
 <!DOCTYPE html>
   <html>
     <head>
+      <!--chart.js-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+
       <script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="./assets/javascript/parents.js"></script>
@@ -94,11 +97,41 @@
           <div class="col-md-12">
             <h2>Completed Tasks</h2>
               <div id="complete"></div>
-          </div>
+
+
+          <!--chart-->
+
+          <canvas id="bar-chart" width="600" height="350"></canvas>
+          <canvas id="chart"></canvas>
+
+          <div class="card text-center">
+        <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Prob Not Mine</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">The Special One</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">The Ugly One</a>
+        </li>
+        </ul>
+        </div>
+        <div class="card-body">
+        <h4 class="card-title">Most Recent Message:</h4>
+        <p class="card-text">Updates to or from spawn</p>
+        <a href="#" class="btn btn-primary">Read</a>
+        </div>
+        </div>
+        <!--end chart-->
+
+        </div>
         </div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
+
 
 
 

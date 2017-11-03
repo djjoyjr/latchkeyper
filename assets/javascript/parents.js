@@ -41,6 +41,7 @@ $(document).ready( function(){
         	//Takes snapshot of dbRoot
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
+<<<<<<< HEAD
 
             	if (snapshot.hasChild(currentUser.uid)) {
            			console.log("User exists in DB");
@@ -49,11 +50,19 @@ $(document).ready( function(){
             	// if (snapshot.hasChild(currentUser.uid)) {
               //
             	// }
+=======
+            	if (snapshot.hasChild(currentUser.uid)) {
+           			console.log("User exists in DB");
+              }
+            	if (snapshot.hasChild(currentUser.uid)) {
+            	}
+>>>>>>> a47fe1058ca484ca336ef2486109fcee800b5651
             	//If not, runs createUser which adds their user data to the database
             	else {
               		createUser(currentUser.uid, currentUser.displayName, currentUser.email);
             		}
           	});
+
           	//Database references
     		var dbRefUser = dbRefRoot.child(activeUser);
     		var dbRefKids = dbRefUser.child("children");
@@ -66,7 +75,31 @@ $(document).ready( function(){
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
+        console.log();
 			});
+
+      //enables on click listen for dynamically created buttons
+      $('#children').on('click', "button", function() {
+        var dm = prompt("Enter your message:");
+        dbRefKids.child(this.id).push(dm);
+      });
+
+      // //onClick of addMessage
+      // $("#message-child-button").click(messageChild);
+      // function messageChild () {
+      //   var msg = prompt("Enter your message:");
+      //   var dbRefUser = dbRefRoot.child(activeUser);
+      //       if(dbRefUser.child("messages")){
+      //         dbRefUser.child("mesages").push(msg);
+      //       }
+      //       else {
+      //         dbRefUser.push({"messages":msg});
+      //       }
+      //   $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+      // };
+
+
+
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
@@ -90,16 +123,15 @@ $(document).ready( function(){
 			//Generate dropdown list of children
 			var list = $("#forWhom");
 			$('<option />', {value: "All", text: "All"}).appendTo(list);
-			dbRefKids.on("value", function(snapshot){
+			dbRefKids.once("value", function(snapshot){
 				snapshot.forEach(function(child){
 					var name = child.key;
 					$('<option />', {value: name, text: name}).appendTo(list);
 				});
 			});
-
 			//Updates complete with completed chores
 			dbRefChores.on('child_added', function(snapshot){
-				console.log(snapshot.val().done);
+				// console.log(snapshot.val().done);
 				if(snapshot.val().done){
 					var newChore = $('<div></div>'); //Creates new div
 					var points = snapshot.val().Total;
@@ -152,19 +184,6 @@ $(document).ready( function(){
       		}
       });
 
-      //onClick of addMessage
-      $("#message-child-button").click(messageChild);
-      function messageChild () {
-        var msg = prompt("Enter your message:");
-        var dbRefUser = dbRefRoot.child(activeUser);
-            if(dbRefUser.child("messages")){
-              dbRefUser.child("mesages").push(msg);
-            }
-            else {
-              dbRefUser.push({"messages":msg});
-            }
-        $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-      };
 
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
@@ -173,9 +192,6 @@ $(document).ready( function(){
       	dbRefChores.child(this.id).remove();
       });
 
-
-
-      //Ani is learning
 
       firebase.auth().onAuthStateChanged(function(currentUser){
 
@@ -231,10 +247,10 @@ var datetime;
             // console.log(child.val().Diff);
             // console.log(child.val().Prio);
             diffArray.push(diff);
-            console.log(diffArray);
+            // console.log(diffArray);
 
             prioArray.push(prio);
-            console.log(prioArray);
+            // console.log(prioArray);
 
             totalArray.push(total);
             console.log(totalArray);

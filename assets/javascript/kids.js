@@ -16,13 +16,6 @@ $(document).ready( function(){
     	const dbRefRoot = firebase.database().ref();
     	const rmvChores = $(".rmvChore");
 
-      //Function create user
-      const createUser = function (userID, userName, email){
-        console.log(userID, userName, email);
-        dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}});
-        //dbRefRoot.child(userID).update({"children": null});
-        //dbRefRoot.child(userID).update({"messages": null});
-      }
 
       //onAuthStateChanged listens for state to change to either logged in or logged out
       firebase.auth().onAuthStateChanged( function(currentUser){
@@ -56,14 +49,6 @@ $(document).ready( function(){
     		var dbRefKids = dbRefUser.child("children");
     		var dbRefChores = dbRefUser.child("chores");
 
-    		//Updates listOfKids when child added (or on load)
-    		dbRefKids.on('child_added', function(snapshot){
-				var newKid = $('<div></div>'); //Creates new div
-				newKid.addClass("kids");
-				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
-				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
-				$("#listOfKids").append(newKid);
-			});
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
@@ -80,22 +65,60 @@ $(document).ready( function(){
 				choreRemove.remove();
 			});
 
-			//Generate dropdown list of children
-			var list = $("#forWhom");
-			$('<option />', {value: "All", text: "All"}).appendTo(list);
-			dbRefKids.on("value", function(snapshot){
-				snapshot.forEach(function(child){
-					var name = child.key;
-					$('<option />', {value: name, text: name}).appendTo(list);
-				});
-			});
-
         }
         else {
           console.log("Not logged in"); //Use to confirm logout in development
           btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
         }
+        //on click of the Check In button
+        //this writes to the jumbotron on this page, but will need to write to the parents page eventually
+        $("#check-in-button").click(checkIn);
+        function checkIn () {
+          var checkingIn = new Date();
+          var kidname = firebase.database().ref().child.val;
+          console.log(kidname);
+          var dbRefKids = dbRefUser.child("children");
+            if(dbRefKids.child(kidname)){
+              dbRefKids.child(kidname).update({[kidname]:{"checkIn": checkingIn}});
+            }
+            else {
+              dbRefKids.update({kidname:{[kidname]:{"checkIn": checkingIn}}});
+            }
+          // $("#messages").append("<div> Your child checked in at home at:  " + checkingIn + "<span id='delete'>X</span></div>");
+        };
+
+        // $("#request-reward-button").click(requestReward);
+        //
+        // function requestReward () {
+        //   var rewardRequest = prompt("Request a reward: ");
+        //   var requester = dbRefKids.child
+        //   var kidname = $("#childName").val();
+        //   var dbRefKids = dbRefRoot.child(activeUser);
+        //     if(dbRefKids.child("children")){
+        //       dbRefKids.child("children").update({[kidname]:{"reward": rewardRequest}});
+        //     }
+        //     else {
+        //       dbRefKids.update({"children":{[kidname]:{"reward": rewardRequest}}});
+        //     }
+        // };
+
+
+
+
+
+
       });
+
+
+
+
+
+
+        // //this writes to the jumbotron on this page, but will need to write to the parents page eventually
+        // function messageParents () {
+        //   var msg = prompt("Enter your message:");
+        //   $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+        // }
 
       var activeUser;
 
@@ -104,17 +127,6 @@ $(document).ready( function(){
         firebase.auth().signOut();
       });
 
-      //onClick of submitChild
-      submitChild.on("click", function(){
-      	var kidname = $("#childName").val();
-      	var dbRefUser = dbRefRoot.child(activeUser);
-      		if(dbRefUser.child("children")){
-      			dbRefUser.child("children").update({[kidname]:{"points": 0}});
-      		}
-      		else {
-      			dbRefUser.update({"children":{[kidname]:{"points": 0}}});
-      		}
-      });
 
       //onClick of addChore
       addChore.on("click", function(){
@@ -122,13 +134,12 @@ $(document).ready( function(){
       	var prioPoints = parseInt($("#priority").val());
       	var diffPoints = parseInt($("#difficulty").val());
       	var totPoints = prioPoints + diffPoints;
-      	var whoDo = $("#forWhom").val();
       	var dbRefUser = dbRefRoot.child(activeUser);
       		if(dbRefUser.child("chores")){
-      			dbRefUser.child("chores").update({[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints, "For": whoDo}})
+      			dbRefUser.child("chores").update({[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints}})
       		}
       		else {
-      			dbRefUser.update({"chores":{[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints, "For": whoDo}}})
+      			dbRefUser.update({"chores":{[choreName]:{"done": false, "Diff": diffPoints, "Prio": prioPoints, "Total": totPoints}}})
       		}
       });
 
@@ -148,9 +159,7 @@ $(document).ready( function(){
 
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
-      	var dbRefUser = dbRefRoot.child(activeUser);
-      	var dbRefChores = dbRefUser.child("chores");
-      	dbRefChores.child(this.id).remove();
+      	console.log("I removed " +this.id);
       });
 
 });//End of document.ready

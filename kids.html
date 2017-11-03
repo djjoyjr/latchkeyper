@@ -5,55 +5,73 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
       <link rel="stylesheet" href="./assets/css/style.css">
+      <script src="./assets/javascript/kids.js"></script>
       <title>Latchkeyper Kids Page</title>
     </head>
 
     <body class="body">
         <button type="button" class="btn btn-primary" id="check-in-button">Check In</button>
-        <!-- <button type="button" class="btn btn-primary" id="task-list-button">Task List</button> -->
-        <button type="button" class="btn btn-primary" id="request-reward-button">Request a Reward</button>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="request-reward-button">Request a Reward</button>
+          <ul class="dropdown-menu"></ul>
         <button type="button" class="btn btn-primary" id="check-points-button">Check Points Balance</button>
         <button type="button" class="btn btn-primary" id="message-parents-button">Message to Parent</button>
 
       <div class="jumbotron">
-      		<p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
+        <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
       </div>
 
       <div class="container">
-        <div class="row content-center" id="tasks">
-
+        <!-- this is the old to do list, which will be replaced by the dynamic list.  -->
+        <!-- <div class="row content-center" id="tasks">
           <h1>Task List</h1>
           <input id="new-task" type="text">
           <button id="add">Add!</button>
         </div>
-        <hr>
-
+      <hr> -->
  		    <div class="row content-center">
           <h1>Reward List:</h1>
           <ul id="reward-requests">
           </ul>
         </div>
-
       </div>
-    <!-- <script type="text/javascript" src="./assets/javascript/latchkeyper.js"> -->
+
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Task List</h2>
+          <div id="listOfChores"></div>
+          Name of task:
+          <input id="new-task" type="text">
+          <br>
+          Priority (5 - high, 1 - low):
+          <select id="priority">
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+          <br>
+          Difficulty (5 - high, 1 - low):
+          <select id="difficulty">
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+          <br>
+          <!-- <button id="addTask">Add!</button>
+          <ul id="tasks"></ul> -->
+        </div>
+      </div>
+      <hr>
+    </body>
+  </html>
+
+      <!--
+    <script type="text/javascript" src="./assets/javascript/kids.js">
     <script>
 $(document).ready(function() {
-//-----------------------------functions go here--------------------------------
-//this writes to the jumbotron on this page, but will need to write to the parents page eventually
-function messageParents () {
-  var msg = prompt("Enter your message:");
-  $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-}
-//this writes to the jumbotron on this page, but will need to write to the parents page eventually
-function checkIn () {
-  var checkingIn = new Date();
-  $("#messages").append("<div> Your child checked in at home at:  " + checkingIn + "<span id='delete'>X</span></div>");
-}
-//this writes to the div on this page, but will need to write to the parents page eventually
-function requestReward () {
-  var rewardRequest = prompt("Request a reward: ");
-  $("#reward-requests").append("<div>" + rewardRequest + "<span id='delete'>X</span></div>");
-}
 // function checkPoints () {
 // }
 
@@ -66,14 +84,8 @@ function removeTask() {
   $(this).closest("div").remove();
 }
 
-
-
-//---------------event listening ---------------------------------
-
   $("#message-parents-button").click(messageParents);
   // $("#task-list-button").click(addTask);
-  $("#check-in-button").click(checkIn);
-  $("#request-reward-button").click(requestReward);
   $("#add").click(addTask);
   $(document).on("click", "#delete", removeTask);
   $("input").keypress(function(event) {
@@ -85,14 +97,6 @@ function removeTask() {
   });
 
 
-});
+}); -->
 
-    </script>
-
-
-
-
-
-
-    </body>
-  </html>
+    <!-- </script> -->

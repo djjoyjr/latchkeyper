@@ -11,13 +11,13 @@
     </head>
     <body class="body">
       <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1"><a href="index.html">Latchkeyper</a></span>
+        <span class="navbar-brand mb-0 h1"><a class="latchLink" href="index.html">Latchkeyper</a></span>
         <button id="btnSignOut" class="btn btn-dark navbar-right">Sign Out</button>
       </nav>
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <div class="jumbotron">
+            <div class="jumbotron welcometron">
               <h1 id="welcome"></h1>
               <hr>
               <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
@@ -39,7 +39,7 @@
             <div id="children">
                 <h2>Children</h2>
                 <div id="listOfKids"></div>
-                <div>Add a Child: 
+                <div>Add a Child:
                   <input type="text" id="childName" class="togChild" placeholder="Enter Child's Name">
                   <button id="submitChild" class="togChild">Submit</button>
                 </div>
@@ -76,12 +76,24 @@
             <ul id="tasks"></ul>
           </div>
         </div>
+
+
+        <!--Scorechart-->
+        <p>
+          <ol id="scoreChart">
+
+          </ol>
+        </p>
+        
         <hr>
 
         <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
  		    <div class="row content-center" id="ADDIDHERELATER"></div>
+
+
+
       </div>
 
       <!--adds d3 library  -->

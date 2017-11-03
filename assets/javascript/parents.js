@@ -38,11 +38,11 @@ $(document).ready( function(){
       		//Sets uid to variable
         	activeUser = currentUser.uid;
         	//Sets logout button to visible
-        	btnSignOut.css("visibility", "visible"); 
+        	btnSignOut.css("visibility", "visible");
         	//Takes snapshot of dbRoot
         	dbRefRoot.once('value', function(snapshot) {
             	//If root has a node with the current user's ID, confirms existance in DB
-            	if (snapshot.hasChild(currentUser.uid)) { 
+            	if (snapshot.hasChild(currentUser.uid)) {
            			console.log("User exists in DB");
             	}
             	//If not, runs createUser which adds their user data to the database
@@ -88,7 +88,7 @@ $(document).ready( function(){
       });
 
       var activeUser;
-    	
+
       //onClick event for Logout button
       btnSignOut.on("click", function(){
         firebase.auth().signOut();
@@ -140,4 +140,81 @@ $(document).ready( function(){
       	console.log("I removed " +this.id);
       });
 
+
+
+      //Ani is learning
+
+      firebase.auth().onAuthStateChanged(function(currentUser){
+
+    database = firebase.database();
+
+     if(currentUser) {
+          var dbRefRoot = firebase.database().ref();
+          var dbRefUser = dbRefRoot.child(currentUser.uid);
+          var dbRefChores = dbRefUser.child("chores");
+          var diff;
+          var prio;
+          var total;
+
+          var diffArray = [];
+          var prioArray = [];
+          var totalArray = [];
+
+
+       dbRefChores.on('value', function(snapshot){
+          snapshot.forEach(function(child){
+             diff = child.val().Diff;
+             prio = child.val().Prio;
+             total = child.val().Total;
+
+            // console.log(child.val().Total);
+            // console.log(child.val().Diff);
+            // console.log(child.val().Prio);
+            diffArray.push(diff);
+            console.log(diffArray);
+
+            prioArray.push(prio);
+            console.log(prioArray);
+
+            totalArray.push(total);
+            console.log(totalArray);
+          });
+
+
+
+       });
+     }
+
+
+
+  });
+
+//first way
+    // var ref = database.ref('/zFGdoWqKYbhN3gpKZiX3TSj24WW2/chores/Clean the inside of the microwave/Total');
+    // ref.on('value', gotData, errorData);
+    //
+    // function gotData(data) {
+    //     console.log(data.val());
+    //     var total = data.val();
+    //     console.log(total);
+    //     var keys = Object.keys(total);
+    //     console.log(keys);
+    //       for (var i = 0; i< keys.length; i++){
+    //         var k = keys[i];
+    //         var initials = total[k].Total;
+    //         var score = total[k].score;
+    //         console.log(Total, score);
+    //
+    //         var li = document.createElement('li', total );
+    //         li.parent('scoreChart');
+    //       }
+    // }
+    //
+    // function errorData(err) {
+    //   console.log('error!');
+    //   console.log(err);
+    // }
+//end first way
+
+//end Ani Learning
 });//End of document.ready

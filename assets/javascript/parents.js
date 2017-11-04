@@ -66,6 +66,12 @@ $(document).ready( function(){
 				$("#listOfKids").append(newKid);
 			});
 
+        //Updates listOfKids on kid removal
+      dbRefKids.on('child_removed', function(snapshot){
+        const kidRemove = $("#"+snapshot.key);
+        kidRemove.remove();
+      });
+
         //Updates message center with messages from kids pulled from database
         dbRefMessages.on('child_added', function (snapshot){
           var message = snapshot.val();
@@ -191,15 +197,21 @@ $(document).ready( function(){
       		}
       });
 
+      //onClick of removeChore for chores not yet completed
+      $("#listOfKids").on("click", ".rmvKid", function(){
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefKids = dbRefUser.child("children");
+        dbRefKids.child(this.id).remove();
+      });
 
-      //onClick of removeChore
-      $("#listOfChores").on("click", "button", function(){
+      //onClick of removeChore for chores not yet completed
+      $("#listOfChores").on("click", ".rmvChore", function(){
       	var dbRefUser = dbRefRoot.child(activeUser);
       	var dbRefChores = dbRefUser.child("chores");
       	dbRefChores.child(this.id).remove();
       });
 
-      //onClick of removeChore
+      //onClick of removeChore for completed chore (will be removed later)
       $("#complete").on("click", "button", function(){
         var dbRefUser = dbRefRoot.child(activeUser);
         var dbRefChores = dbRefUser.child("chores");

@@ -173,6 +173,25 @@ $(document).ready(function() {
         });
       });
 
+      dbRefChores.onUpdate(function(snapshot){
+        snapshot.forEach(function(tasksnap){
+          if(tasksnap.val().done){}
+          else {
+          taskDiv = $("<div></div>");
+          points = tasksnap.val().Total;
+          who = tasksnap.val().For;
+          console.log(who);
+          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
+          taskDiv.addClass("chores");
+          taskDiv.attr("id", "chore-div");
+          console.log(taskDiv);
+          $(taskDiv).appendTo('#div'+who);
+          }
+        });
+      });
+      
+
+
       //onClick of Complete Chore
       $("#kidTasks").on("click", "button", function() {
         var kid = this.className;

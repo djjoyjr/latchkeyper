@@ -19,7 +19,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="jumbotron">
-              <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
+              <p class="text-center">Message Center:  <span id="message"></span></p>
             </div>
           </div>
         </div>
@@ -28,7 +28,6 @@
             <div id="kid-controls">
               <button type="button" class="btn btn-primary" id="check-in-button">Check In</button><select id="whoCheckIn"></select>
               <button type="button" class="btn btn-primary" id="request-reward-button">Request a Reward</button><select id="whoRequest"></select>
-              <button type="button" class="btn btn-primary" id="check-points-button">Check Points Balance</button>
               <button type="button" class="btn btn-primary" id="message-parents-button">Message to Parent</button>
             </div>
           </div>
@@ -75,35 +74,3 @@
     </div>
   </body>
 </html>
-
-      <!--
-    <script type="text/javascript" src="./assets/javascript/kids.js">
-    <script>
-$(document).ready(function() {
-// function checkPoints () {
-// }
-
-function addTask() {
-  var task = $("#new-task").val();
-  $("#tasks").append("<div>" + task + "<span id='delete'>X</span></div>");
-  $("#new-task").val("");
-}
-function removeTask() {
-  $(this).closest("div").remove();
-}
-
-  // $("#task-list-button").click(addTask);
-  $("#add").click(addTask);
-  $(document).on("click", "#delete", removeTask);
-  $("input").keypress(function(event) {
-    // listen to see that key was "enter."
-    if (event.which === 13) {
-      // If so, run addTask.
-      addTask();
-    }
-  });
-
-
-}); -->
-
-    <!-- </script> -->

@@ -1,6 +1,8 @@
 .index {
   background-image: url(../images/latchkeyperbckgrnd.jpg);
-}
+  background-repeat: no-repeat;
+  background-size: cover;
+  }
 
 .jumbotron {
   width: 50%;

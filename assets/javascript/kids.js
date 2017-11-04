@@ -47,7 +47,7 @@ $(document).ready(function() {
       var dbRefUser = dbRefRoot.child(activeUser);
       var dbRefKids = dbRefUser.child("children");
       var dbRefChores = dbRefUser.child("chores");
-
+      var dbRefMessages = dbRefKids.child("messages");
 
       //Updates listOfChores when chore added (or on load)
       dbRefChores.on('child_added', function(snapshot) {
@@ -56,7 +56,7 @@ $(document).ready(function() {
         newChore.addClass("chores");
         newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
         $("#listOfChores").append(newChore);
-        console.log(newChore);
+        // console.log(newChore);
       });
 
       //Updates listOfChores on chore removal
@@ -86,6 +86,33 @@ $(document).ready(function() {
         });
       }
     };
+
+    //Updates message center with direct messages to kids from parents pulled from database
+      dbRefKids.once('value', function (snapshot){
+        snapshot.forEach(function(msgsnap) {
+          var recipient = msgsnap.key;
+          // console.log(recipient);
+          var dm = msgsnap.val().messages;
+          console.log(dm);
+          var msgFromParent = $('<div></div>');
+          msgFromParent.addClass("message");
+          msgFromParent.text(recipient + ": " + dm);
+          // msgFromParent.attr("id", snapshot.val());
+          $("#message").append(msgFromParent);
+        });
+      });
+
+     dbRefKids.once("value", function(snapshot) {
+       snapshot.forEach(function(rewardsnap) {
+         var requester = rewardsnap.key;
+         $('<option />', {
+           value: requester,
+           text: requester
+         }).appendTo(requestlist);
+       });
+     });
+
+
 
 
     $("#request-reward-button").click(requestReward);
@@ -129,7 +156,6 @@ $(document).ready(function() {
         });
       });
 
-
       //Generate task div for each child of "children"
       var kidsTasks = $("#kidTasks");
       var kid;
@@ -163,11 +189,11 @@ $(document).ready(function() {
           taskDiv = $("<div></div>");
           points = tasksnap.val().Total;
           who = tasksnap.val().For;
-          console.log(who);
+          // console.log(who);
           taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
           taskDiv.addClass("chores");
           taskDiv.attr("id", "chore-div");
-          console.log(taskDiv);
+          // console.log(taskDiv);
           $(taskDiv).appendTo('#div'+who);
           }
         });
@@ -202,7 +228,6 @@ $(document).ready(function() {
           dbRefUser.update({"history":{[monthDay]:{[chore]:{[kid]:pointsAdd}}}});
         }
         });
-
       });
   });
 
@@ -254,18 +279,6 @@ $(document).ready(function() {
     var dbRefUser = dbRefRoot.child(activeUser);
     dbRefUser.child("messages").update({"message":msg});
   };
-
-  // //Updates message center with direct messages to kids from parents pulled from database
-  //        dbRefMessages.on('child_added', function (snapshot){
-  //          var message = snapshot.val();
-  //          var msgFromKid = $('<div></div>');
-  //            msgFromKid.addClass("message");
-  //            msgFromKid.html(snapshot.val());
-  //            msgFromKid.attr("id", snapshot.val());
-  //            $("#messages").append(msgFromKid);
-  //          });
-
-
 
 
   //onClick of removeChore

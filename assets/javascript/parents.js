@@ -66,7 +66,7 @@ $(document).ready( function(){
 			});
 
       //enables on click listen for dynamically created buttons
-      $('#children').on('click', "button", function() {
+      $('#children').on('click', ".msgKid", function() {
         var dm = prompt("Enter your message:");
         dbRefKids.child(this.id).push(dm);
       });
@@ -114,7 +114,7 @@ $(document).ready( function(){
 
 			//Updates listOfChores on chore removal
 			dbRefChores.on('child_removed', function(snapshot){
-				const choreRemove = $("#"+shapshot.key);
+				const choreRemove = $("#"+snapshot.key);
 				choreRemove.remove();
 			});
 

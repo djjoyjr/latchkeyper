@@ -13,36 +13,6 @@
 
   //End required firebase code
 
-
-var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-var chores = ["Laundry", "Dishes", "Mow Lawn", "Rake Leaves", "Walk Dog", "Clean Room", "Pick up dog poop", "Vacuum", "Sweep Floor", "Clean Bathroom"];
-var schoolwork = [];
-var miscellaneous = ["Practice Instrument", "Write to Grandparents", "Floss"];
-
-
-
-function assignTask () {
-}
-
-function mangagePoints () {
-}
-
-function respondToRequest () {
-}
-
-function checkIn () {
-}
-
-function taskLisk () {
-}
-
-function requestReward () {
-}
-
-function checkPoints () {
-}
-
-
 $(document).ready(function() {
 
 $("button").click(message);

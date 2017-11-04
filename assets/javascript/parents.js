@@ -105,7 +105,8 @@ $(document).ready( function(){
     			else{
 				var newChore = $('<div></div>'); //Creates new div
 				var points = snapshot.val().Total;
-				newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+        var kid = snapshot.val().For;
+				newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><p>For: "+kid+"</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
 				newChore.addClass("chores");
 				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfChores").append(newChore);

@@ -96,12 +96,20 @@ $(document).ready(function() {
           console.log(dm);
           var msgFromParent = $('<div></div>');
           msgFromParent.addClass("message");
-          msgFromParent.text(recipient + ": " + dm);
+          msgFromParent.html(recipient + ": " + dm + '<button type="button" id="deleteMessage">Delete Message</button>');
           // msgFromParent.attr("id", snapshot.val());
           $("#message").append(msgFromParent);
         });
       });
 
+      $('#deleteMessage').on('click', 'button', function() {
+        alert("you are clicking a button");
+        // console.log(dbRefKids.child.messages);
+        // dbRefKids.child(messages).remove();
+      });
+
+
+      //sets values for the selector list identifying who's requesting a reward
      dbRefKids.once("value", function(snapshot) {
        snapshot.forEach(function(rewardsnap) {
          var requester = rewardsnap.key;
@@ -112,9 +120,7 @@ $(document).ready(function() {
        });
      });
 
-
-
-
+     //Child can request a reward from parents
     $("#request-reward-button").click(requestReward);
     function requestReward() {
       var rewardRequest = prompt("Request a reward: ");
@@ -136,13 +142,13 @@ $(document).ready(function() {
     var checklist = $("#whoCheckIn");
     dbRefKids.once("value", function(snapshot) {
       snapshot.forEach(function(kidsnap) {
-      var name = kidsnap.key;
-      $('<option />', {
-        value: name,
-        text: name
-      }).appendTo(checklist);
+        var name = kidsnap.key;
+        $('<option />', {
+          value: name,
+          text: name
+        }).appendTo(checklist);
       });
-      });
+    });
 
       //Generate dropdown list of children for request
       var requestlist = $("#whoRequest");

@@ -382,17 +382,8 @@ var datetime;
 
             //end chart
           });
-
-
-
        });
      }
-
-
-
   });
-
-
-
 //end Ani Learning
 });//End of document.ready

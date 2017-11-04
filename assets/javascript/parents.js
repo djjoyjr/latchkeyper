@@ -78,10 +78,12 @@ $(document).ready( function(){
 
 
       //enables on click listen for dynamically created buttons
+      //sends message to whichever kid's button the parent clicks on
       $('#children').on('click', ".msgKid", function() {
         var dm = prompt("Enter your message:");
-        dbRefKids.child(this.id).push(dm);
+        dbRefKids.child(this.id).update({"messages":dm});
       });
+
 
       //Creates buttons for each requested reward from db
         dbRefKids.on('child_added', function(snapshot){

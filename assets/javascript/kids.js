@@ -70,14 +70,12 @@ $(document).ready(function() {
       btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
     }
     //on click of the Check In button
-    //this writes to the jumbotron on this page, but will need to write to the parents page eventually
     $("#check-in-button").click(checkIn);
-
     function checkIn() {
       var checkingIn = new Date();
       var kidname = $("#whoCheckIn").val();
-      if (dbRefUser.child("children").child(kidname)) {
-        dbRefUser.child("children").child(kidname).update({
+      if (dbRefKids.child(kidname)) {
+        dbRefKids.child(kidname).update({
           "checkIn": checkingIn
         });
       } else {
@@ -88,8 +86,9 @@ $(document).ready(function() {
         });
       }
     };
-    $("#request-reward-button").click(requestReward);
 
+
+    $("#request-reward-button").click(requestReward);
     function requestReward() {
       var rewardRequest = prompt("Request a reward: ");
       var requester = $("#whoRequest").val();
@@ -194,10 +193,6 @@ $(document).ready(function() {
         });
 
       });
-
-
-
-
   });
 
 
@@ -246,15 +241,20 @@ $(document).ready(function() {
   function messageParents () {
     var msg = prompt("Enter your message:");
     var dbRefUser = dbRefRoot.child(activeUser);
-    if (dbRefUser.child("messages")) {
-      dbRefUser.child("messages").push(msg);
-    } else {
-      dbRefUser.push({
-        "messages": msg
-      });
-    }
-    $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+    dbRefUser.child("messages").update({"message":msg});
   };
+
+  // //Updates message center with direct messages to kids from parents pulled from database
+  //        dbRefMessages.on('child_added', function (snapshot){
+  //          var message = snapshot.val();
+  //          var msgFromKid = $('<div></div>');
+  //            msgFromKid.addClass("message");
+  //            msgFromKid.html(snapshot.val());
+  //            msgFromKid.attr("id", snapshot.val());
+  //            $("#messages").append(msgFromKid);
+  //          });
+
+
 
 
   //onClick of removeChore

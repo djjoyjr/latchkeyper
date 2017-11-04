@@ -56,6 +56,7 @@ $(document).ready(function() {
         newChore.addClass("chores");
         newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
         $("#listOfChores").append(newChore);
+        console.log(newChore);
       });
 
       //Updates listOfChores on chore removal
@@ -176,22 +177,22 @@ $(document).ready(function() {
       //onClick of Complete Chore
       $("#kidTasks").on("click", "button", function() {
         var kid = this.className;
-        console.log(kid);
+        // console.log(kid);
         var chore = this.id;
         var pointsAdd;
         var pointTotal;
         dbRefChores.child(chore).update({"done": true});
         dbRefChores.once("value", function(snapshot){
             pointsAdd = snapshot.child(chore).val().Total;
-            console.log(pointsAdd);
+            // console.log(pointsAdd);
         });
         dbRefKids.once("value",function(snapshot){
           pointTotal =snapshot.child(kid).val().points;
           pointTotal += pointsAdd;
-          console.log(pointTotal);
+          // console.log(pointTotal);
           dbRefKids.child(kid).update({"points": pointTotal});
         });
-    
+
       });
 
 
@@ -199,11 +200,6 @@ $(document).ready(function() {
 
   });
 
-  // //this writes to the jumbotron on this page, but will need to write to the parents page eventually
-  // function messageParents () {
-  //   var msg = prompt("Enter your message:");
-  //   $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-  // }
 
   var activeUser;
 
@@ -243,14 +239,15 @@ $(document).ready(function() {
     }
   });
 
-  //onClick of addMessage
-  $("#message-child-button").click(messageChild);
 
-  function messageChild() {
+  //onClick of Message Parents Button
+  $("#message-parents-button").click(messageParents);
+
+  function messageParents () {
     var msg = prompt("Enter your message:");
     var dbRefUser = dbRefRoot.child(activeUser);
     if (dbRefUser.child("messages")) {
-      dbRefUser.child("mesages").push(msg);
+      dbRefUser.child("messages").push(msg);
     } else {
       dbRefUser.push({
         "messages": msg
@@ -259,6 +256,7 @@ $(document).ready(function() {
     $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
   };
 
+
   //onClick of removeChore
   $("#listOfChores").on("click", "button", function() {
     var dbRefUser = dbRefRoot.child(activeUser);
@@ -266,6 +264,6 @@ $(document).ready(function() {
     dbRefChores.child(this.id).remove();
   });
 
-  
+
 
 }); //End of document.ready

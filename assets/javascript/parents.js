@@ -54,6 +54,8 @@ $(document).ready( function(){
     		var dbRefUser = dbRefRoot.child(activeUser);
     		var dbRefKids = dbRefUser.child("children");
     		var dbRefChores = dbRefUser.child("chores");
+        var dbRefMessages = dbRefUser.child("messages");
+
 
     		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
@@ -62,8 +64,18 @@ $(document).ready( function(){
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
-        // console.log();
 			});
+
+        //Updates message center with messages from kids pulled from database
+        dbRefMessages.on('child_added', function (snapshot){
+          var message = snapshot.val();
+          var msgFromKid = $('<div></div>');
+            msgFromKid.addClass("message");
+            msgFromKid.html(snapshot.val());
+            msgFromKid.attr("id", snapshot.val());
+            $("#messages").append(msgFromKid);
+          });
+
 
       //enables on click listen for dynamically created buttons
       $('#children').on('click', ".msgKid", function() {
@@ -86,16 +98,11 @@ $(document).ready( function(){
       //Removes request from db on click
       $("#reward-requests").on("click", "button", function(){
         var dbRefUser = dbRefRoot.child(activeUser);
-        // console.log(dbRefUser.key)
       	var dbRefKids = dbRefUser.child("children");
-        // console.log(dbRefKids.key);
         console.log(this.id);
         var kid = this.id;
         var dbRefRewards = dbRefKids.child(kid);
         dbRefRewards.child("reward").remove();
-
-        //dbRefRewards.child(thing).remove();
-
       });
 
 
@@ -142,7 +149,7 @@ $(document).ready( function(){
 
         }
         else {
-          console.log("Not logged in"); //Use to confirm logout in development
+          // console.log("Not logged in"); //Use to confirm logout in development
           btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
         }
       });
@@ -217,7 +224,7 @@ $(document).ready( function(){
           spawnName = child.key;
 
           spawnArray.push(spawnName);
-          console.log(spawnArray);
+          // console.log(spawnArray);
         });
 
         $('#nameOne').html(spawnArray[0]);
@@ -261,7 +268,7 @@ var datetime;
                              + currentdate.getMinutes() + ":"
                              + currentdate.getSeconds();
 
-                             console.log(datetime);
+                            //  console.log(datetime);
                              dates.push(datetime);
 
             // console.log(child.val().Total);
@@ -274,7 +281,7 @@ var datetime;
             // console.log(prioArray);
 
             totalArray.push(total);
-            console.log(totalArray);
+            // console.log(totalArray);
 
             //start chart data
             var numberWithCommas = function(x) {
@@ -293,7 +300,7 @@ var datetime;
 
 
 
-            console.log(total);
+            // console.log(total);
 
 
 

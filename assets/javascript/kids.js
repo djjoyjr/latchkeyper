@@ -91,22 +91,31 @@ $(document).ready(function() {
       dbRefKids.once('value', function (snapshot){
         snapshot.forEach(function(msgsnap) {
           var recipient = msgsnap.key;
-          // console.log(recipient);
           var dm = msgsnap.val().messages;
-          console.log(dm);
+          // console.log(dm);
           var msgFromParent = $('<div></div>');
           msgFromParent.addClass("message");
-          msgFromParent.html(recipient + ": " + dm + '<button type="button" id="deleteMessage">Delete Message</button>');
-          // msgFromParent.attr("id", snapshot.val());
+          msgFromParent.attr("id", dm);
+          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.val().messages + "'>Delete Message</button>");
           $("#message").append(msgFromParent);
         });
       });
 
-      $('#deleteMessage').on('click', 'button', function() {
-        alert("you are clicking a button");
-        // console.log(dbRefKids.child.messages);
-        // dbRefKids.child(messages).remove();
-      });
+      // delete message buttons - supposed to delete messages from the db, but not currently working
+      $('#message').on('click', 'button', function() {
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefKids = dbRefUser.child("children");
+        var dbRefMessages = dbRefKids.child("messages");
+        var buttonId = this.id;
+        console.log(buttonId);
+        console.log(dbRefMessages.child(buttonId).key);
+        dbRefKids.child(this.id).remove();
+        });
+
+
+
+
+
 
 
       //sets values for the selector list identifying who's requesting a reward
@@ -204,25 +213,6 @@ $(document).ready(function() {
           }
         });
       });
-
-      dbRefChores.onUpdate(function(snapshot){
-        snapshot.forEach(function(tasksnap){
-          if(tasksnap.val().done){}
-          else {
-          taskDiv = $("<div></div>");
-          points = tasksnap.val().Total;
-          who = tasksnap.val().For;
-          console.log(who);
-          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
-          taskDiv.addClass("chores");
-          taskDiv.attr("id", "chore-div");
-          console.log(taskDiv);
-          $(taskDiv).appendTo('#div'+who);
-          }
-        });
-      });
-      
-
 
       //onClick of Complete Chore
       $("#kidTasks").on("click", "button", function() {

@@ -180,6 +180,12 @@ $(document).ready(function() {
         var chore = this.id;
         var pointsAdd;
         var pointTotal;
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth()+1;
+        var monthDay = month + "-" + day;
+        var dbRefHist = dbRefUser.child("history");
+        var dbRefDay = dbRefHist.child(monthDay);
         dbRefChores.child(chore).update({"done": true});
         dbRefChores.once("value", function(snapshot){
             pointsAdd = snapshot.child(chore).val().Total;
@@ -188,8 +194,13 @@ $(document).ready(function() {
         dbRefKids.once("value",function(snapshot){
           pointTotal =snapshot.child(kid).val().points;
           pointTotal += pointsAdd;
-          // console.log(pointTotal);
           dbRefKids.child(kid).update({"points": pointTotal});
+          if(dbRefDay){
+            dbRefDay.update({[chore]:{[kid]:pointsAdd}});
+          }
+          else {
+          dbRefUser.update({"history":{[monthDay]:{[chore]:{[kid]:pointsAdd}}}});
+        }
         });
 
       });

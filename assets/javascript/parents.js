@@ -59,7 +59,7 @@ $(document).ready( function(){
     		dbRefKids.on('child_added', function(snapshot){
 				var newKid = $('<div></div>'); //Creates new div
 				newKid.addClass("kids");
-				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid' id='"+snapshot.key+"'>Message "+snapshot.key+"</button>");
+				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid btn btn-light btn-sm' id='"+snapshot.key+"'>Message "+snapshot.key+"</button><button class='rmvKid btn btn-light btn-sm' id='"+snapshot.key+"'>Remove "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
         // console.log();
@@ -106,7 +106,7 @@ $(document).ready( function(){
 				var newChore = $('<div></div>'); //Creates new div
 				var points = snapshot.val().Total;
         var kid = snapshot.val().For;
-				newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><p>For: "+kid+"</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+				newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><p>For: "+kid+"</p><button class='rmvChore btn btn-light btn-sm' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
 				newChore.addClass("chores");
 				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfChores").append(newChore);

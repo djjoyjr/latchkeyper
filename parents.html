@@ -10,12 +10,13 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
       <link rel="stylesheet" href="./assets/css/style.css">
       <title>Latchkeyper Parents Page</title>
-    <style> p{ display: inline-block; margin-right: 1em; } </style>
+    <style> div.chores, div.kids, div.done { background-color: white; display: flex; justify-content: space-between; border: 2px solid black; padding: 1em; margin: 2px; } h2 {background-color: #333333; padding: 0.5em; color: rgb(214, 248, 214); margin-bottom: 0px;} div.input-thing{ display: flex; background-color: #555555; color: rgb(214, 248, 214); padding: 1em; margin: 2px; justify-content: space-between; } </style>
     <link rel="icon" type="image/png" href="./assets/images/atkey-icon.png" />
     </head>
     <body class="body">
       <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1"><a class="latchLink" href="index.html">Latchkeyper</a></span>
+        <span class="navbar-brand mb-0 h1"><a class="latchLink" href="index.html"><img src="./assets/images/atkey.png" height="30" width="60" alt="Logo"> Latchkeyper</a></span>
+        <a class="nav-link ml-auto" href="kids.html">Kids Page</a>
         <button id="btnSignOut" class="btn btn-dark navbar-right">Sign Out</button>
       </nav>
       <div class="container">
@@ -31,12 +32,12 @@
         <div class="row">
           <div class="col-md-6">
             <div id="children">
-                <h2>Children</h2>
+              <h2>Children</h2>
                 <div id="listOfKids"></div>
-                <div>Add a Child:
-                  <input type="text" id="childName" placeholder="Enter Child's Name">
-                  <button id="submitChild">Submit</button>
-                </div>
+                  <div class="input-thing">Add a Child:
+                    <input type="text" id="childName" placeholder="Enter Child's Name">
+                    <button id="submitChild">Submit</button>
+                  </div>
                 <hr>
             </div>
           </div><!--End column-->
@@ -49,9 +50,10 @@
           <div class="col-md-12">
             <h2>Task List</h2>
             <div id="listOfChores"></div>
-            Name of task:
+            <div class="input-thing">
+            Task:
             <input id="new-task" type="text">
-            <br>
+            
             Priority (5 - high, 1 - low):
             <select id="priority">
               <option value="5">5</option>
@@ -60,7 +62,7 @@
               <option value="2">2</option>
               <option value="1">1</option>
             </select>
-            <br>
+            
             Difficulty (5 - high, 1 - low):
             <select id="difficulty">
               <option value="5">5</option>
@@ -69,15 +71,15 @@
               <option value="2">2</option>
               <option value="1">1</option>
             </select>
-            <br>
-            Assign Chore to:
+            For:
             <select id="forWhom">
             </select>
-            <br>
+            
             <button id="addTask">Add!</button>
-            <ul id="tasks"></ul>
+            </div>
           </div>
         </div>
+        <hr>
         <div class="row">
           <div class="col-md-12">
             <h2>Completed Tasks</h2>

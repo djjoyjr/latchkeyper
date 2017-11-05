@@ -253,6 +253,7 @@ $(document).ready( function(){
           var dbRefRoot = firebase.database().ref();
           var dbRefUser = dbRefRoot.child(currentUser.uid);
           var dbRefChores = dbRefUser.child("chores");
+
           var diff;
           var prio;
           var total;
@@ -405,34 +406,79 @@ dbRefChores.on('child_added', function(snapshot){
             //end firstchart
             //start second chart
 
+          var dayz = [];
+          var spawnTot = [];
+          var scoreTot = [];
+
+var dbRefHisto = dbRefUser.child("history");
+
+  dbRefHisto.on('child_added', function(childSnapshot){
+
+      histo = childSnapshot.val();
+      dateHisto = childSnapshot.key;
+      //console.log(dateHisto);
+      console.log(histo);
+
+      dayz.push(dateHisto);
+      //console.log(dayz);
+
+childSnapshot.forEach(function(child){
+  pair = child.val();
+
+var kidNameTot = Object.keys(pair).toString();
+
+spawnTot.push(kidNameTot);
+//console.log(spawnTot);
+
+var pointTot = (parseInt(pair[kidNameTot]));
+  //(Object.values(pair)));
+
+scoreTot.push(pointTot);
+//console.log(scoreTot);
+
+
+// if (spawnTot[0] == spawnArray[i]){
+//   for(var i=0; i<scoreTot.length; i++){
+//     var pointTots = parseInt(pointTot) + parseInt(scoreTot[i]);
+//     //console.log(parseInt(pointTots));
+//     console.log(pointTots);
+//   }
+//
+// }
+
+});
+//console.log(scoreTot);
+
+  });
+//});
 
 
             new Chart(document.getElementById("line-chart"), {
   type: 'line',
   data: {
-    labels: dates,
+    labels: dayz,
     datasets: [{
-        data: [86,114,106,106,107,111,133,221,783,2478],
+        data: scoreTot,
         label: spawnArray[0],
         borderColor: "#3e95cd",
         fill: false
       }, {
-        data: [282,350,411,502,635,809,947,1402,3700,5267],
+        data: [40,20,10,16,24],
         label: spawnArray[1],
         borderColor: "#8e5ea2",
         fill: false
       }, {
-        data: [168,170,178,190,203,276,408,547,675,734],
+        data: [40,20,10,16,24],
         label: spawnArray[2],
         borderColor: "#3cba9f",
         fill: false
       }, {
-        data: [40,20,10,16,24,38,74,167,508,784],
+        data: [40,20,10,16,24,],
         label: spawnArray[3],
         borderColor: "#e8c3b9",
         fill: false
       }, {
-        data: [6,3,2,2,7,26,82,172,312,433],
+        data: [6,3,2,2,7,26,3],
         label: spawnArray[4],
         borderColor: "#c45850",
         fill: false

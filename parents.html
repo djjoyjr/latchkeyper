@@ -25,8 +25,29 @@
             <div class="jumbotron welcometron">
               <h1 id="welcome"></h1>
               <hr>
-              <p class="text-center" id="messages">Message Center:  <span class="message"></span></p>
+
             </div>
+
+            <div class="card text-center">
+          <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" id="nameOne"></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"id="nameTwo"></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="nameThree"></a>
+          </li>
+          </ul>
+          </div>
+          <div class="card-body">
+          <h4 class="card-title">Most Recent Message:</h4>
+          <p class="card-text" id="messages">Updates to or from spawn</p>
+          <a href="#" class="btn btn-primary">Read</a>
+          </div>
+          </div>
           </div><!--End column-->
         </div><!--End row-->
         <div class="row">
@@ -53,7 +74,7 @@
             <div class="input-thing">
             Task:
             <input id="new-task" type="text">
-            
+
             Priority (5 - high, 1 - low):
             <select id="priority">
               <option value="5">5</option>
@@ -62,7 +83,7 @@
               <option value="2">2</option>
               <option value="1">1</option>
             </select>
-            
+
             Difficulty (5 - high, 1 - low):
             <select id="difficulty">
               <option value="5">5</option>
@@ -74,7 +95,7 @@
             For:
             <select id="forWhom">
             </select>
-            
+
             <button id="addTask" class="btn btn-light btn-sm">Add!</button>
             </div>
           </div>
@@ -91,27 +112,9 @@
 
           <canvas id="bar-chart" width="600" height="350"></canvas>
           <canvas id="chart"></canvas>
+          <canvas id="line-chart" width="800" height="450"></canvas>
 
-          <div class="card text-center">
-        <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-        <li class="nav-item">
-          <a class="nav-link active" href="#" id="nameOne"></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"id="nameTwo"></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="nameThree"></a>
-        </li>
-        </ul>
-        </div>
-        <div class="card-body">
-        <h4 class="card-title">Most Recent Message:</h4>
-        <p class="card-text">Updates to or from spawn</p>
-        <a href="#" class="btn btn-primary">Read</a>
-        </div>
-        </div>
+
         <!--end chart-->
 
         </div>

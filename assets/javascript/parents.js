@@ -208,46 +208,22 @@ $(document).ready( function(){
         });
       });
         //Parent can manage kids' points here
-       $("#redeem-points").click(redeemPoints);
-       function redeemPoints() {
+       $("#redeem-points").on('click', 'button', function() {
          var kid = $("#redeem-points-list").val();
-        //  console.log(kid);
+         console.log(kid);
          var pointsToRedeem = 0;
          pointsToRedeem = prompt("How many of " + kid + "'s points would you like to redeem?");
-        var dbRefUser = dbRefRoot.child(activeUser);
-        var dbRefKids = dbRefUser.child("children");
-        var dbRefPoints = dbRefKids.child('points');
-        // console.log(dbRefPoints);
-        dbRefKids.once("value", function(snapshot) {
-          console.log(snapshot.val().points);
-            // var pointsAvailable = dbRefPoints.child('kid');
-            // //  console.log(pointsAvailable);
-            //  var totalPoints = dbRefKids.child('kid');
-            // //  console.log(totalPoints);
-            //  var whosePoints = dbRefUser.child(this.id);
-            //  console.log(whosePoints);
-
-
-
-              // $("#combat-updates").text(yourCharacter["name"] + " attacked " + defender ["name"] + " for " + currentAP + " points.");
-        			// yourCharacter["HP"] -= defender["CAP"];
-        			// $(".yourPlayerHP").text("HP: " + yourCharacter["HP"]);
-        			// defender["HP"] -= currentAP;
-        			// $(".yourDefenderHP").text("HP: " + defender["HP"]);
-        			// currentAP += yourCharacter["AP"];
-
-
+          var dbRefUser = dbRefRoot.child(activeUser);
+          var dbRefKids = dbRefUser.child("children");
+          var dbRefPoints = dbRefKids.child('points');
+          dbRefKids.once("value", function(snapshot) {
+          var whichPoints = snapshot.child(kid).val().points;
+          console.log(whichPoints);
+          var adjustedPoints = whichPoints -= pointsToRedeem;
+          console.log(adjustedPoints);
+          dbRefKids.child(kid).update({"points": adjustedPoints});
+          });
         });
-
-
-
-
-       };
-
-
-
-
-
       });  // END OF onAuthStateChanged listens for state to change to either logged in or logged out
 //----------------------------------------------------------------------------------------------------
 

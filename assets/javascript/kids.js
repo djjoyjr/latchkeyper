@@ -104,8 +104,9 @@ $(document).ready(function() {
         });
       });
 
-      // delete message buttons - supposed to delete messages from the db, but not currently working
+      // delete message buttons 
       $('#message').on('click', 'button', function() {
+        console.log(this.id);
         var dbRefUser = dbRefRoot.child(activeUser);
         var dbRefKids = dbRefUser.child("children");
         var dbRefMsgToDelete = dbRefKids.child(this.id);

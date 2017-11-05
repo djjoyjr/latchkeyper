@@ -59,7 +59,7 @@ $(document).ready( function(){
 
     		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
-				var newKid = $('<div></div>'); //Creates new div
+        var newKid = $('<div></div>'); //Creates new div
 				newKid.addClass("kids");
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid btn btn-light btn-sm' id='"+snapshot.key+"'>Message "+snapshot.key+"</button><button class='rmvKid btn btn-light btn-sm' id='"+snapshot.key+"'>Remove "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
@@ -69,11 +69,10 @@ $(document).ready( function(){
         //Updates message center with messages from kids pulled from database
         dbRefMessages.on('child_added', function (snapshot){
           var message = snapshot.val();
-          console.log(message);
           var msgFromKid = $('<div></div>');
             msgFromKid.addClass("message");
-            msgFromKid.html("<p class='message'>" + snapshot.val() + "</p><button class='button btn-light btn-sm' id='"+snapshot.val()+"'>Remove</button>");
-            msgFromKid.attr("id", snapshot.val());
+            msgFromKid.html("<p class='message'>" + message + "</p><button class='button btn-light btn-sm' id='"+message+"'>Remove</button>");
+            msgFromKid.attr("id", snapshot.key);
             $("#messages").append(msgFromKid);
           });
 
@@ -84,9 +83,8 @@ $(document).ready( function(){
             var dbRefMessage = dbRefUser.child('messages');
             console.log(dbRefMessage.key);
             var dbRefMsgToDelete = dbRefMessage.child('message');
-            console.log(dbRefMsgToDelete.key);
-            console.log(dbRefMsgToDelete.child(this.id));
-            dbRefMsgToDelete.child(this.id).remove();
+            console.log(dbRefMessage.child);
+            dbRefMessage.child('message').remove();
           });
 
       //enables on click listen for dynamically created buttons

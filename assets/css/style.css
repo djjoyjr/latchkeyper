@@ -13,6 +13,19 @@
   border: solid 2px #436565;
 
 }
+#description{
+  background-color: rgba(255,255,255, 0.9);
+  border: solid 2px #7b9667;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+.card {
+  margin: 20px;
+}
+
+#kid-controls{
+  margin: 20px;
+}
 .latchLink{
   color: #02111b;
 }
@@ -68,4 +81,11 @@ h1, h4 {
     width: 218px;
     color: black;
     margin: 5px;
+}
+
+.octogift {
+  float:right;
+  width:250px;
+  height: 250px;
+  margin-top: -150px;
 }

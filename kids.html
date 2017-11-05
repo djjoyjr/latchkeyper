@@ -7,21 +7,28 @@
       <link rel="stylesheet" href="./assets/css/style.css">
       <script src="./assets/javascript/kids.js"></script>
       <title>Latchkeyper Kids Page</title>
-      <style> p{display: inline-block; margin-right: 1em;} </style>
+      <style> p{display: inline-block; margin-right: 1em;} div.chores, div.kids, div.done { background-color: white; display: flex; justify-content: space-between; border: 2px solid black; padding: 1em; margin: 2px; } h2 {color:#fff;} h2 { background-color: #12b99f; padding: 0.5em; color: rgb(214, 248, 214); margin-bottom: 0px;}</style>
       <link rel="icon" type="image/png" href="./assets/images/atkey-icon.png" />
     </head>
 
-    <body class="body">
+    <body class="body" style="background-color: #96e8d2;">
       <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1"><a href="index.html"><img src="./assets/images/atkey.png" height="30" width="60" alt="Logo"> Latchkeyper</a></span>
+        <span class="navbar-brand mb-0 h1"><a class="latchLink" href="index.html"><img src="./assets/images/atkey.png" height="30" width="60" alt="Logo"> Latchkeyper</a></span>
         <a class="nav-link ml-auto" href="parents.html">Parents Page</a>
       </nav>
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <div class="jumbotron">
-              <p class="text-center">Message Center:  <span id="message"></span></p>
-            </div>
+            <div class="card text-center">
+          <div class="card-header" style="background-color:#12b99f;">
+
+          </div>
+          <div class="card-body">
+          <h4 class="card-title" id="message">Most Recent Message:</h4>
+          <!-- <p class="card-text" >Updates to or from spawn</p> -->
+          <!-- <a href="#" class="btn btn-primary">Read</a> -->
+          </div>
+          </div>
           </div>
         </div>
         <div class="row">
@@ -36,14 +43,15 @@
         <div class="row">
           <div class="col-md-12">
             <div id="rewards">
-              <h2>Reward List:</h2>
+              <h2 style="color:#fff;">Reward List:</h2>
+              <img class="octogift" src="./assets/images/octoGift2.png" alt"Octopus with gift">
               <ul id="reward-requests"></ul>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div id="kidTasks">
+            <div id="kidTasks" style="color:#fff;">
               <!--Temp removal of kid create task, not needed for MVP-->
               <!--<div id="listOfChores"></div>
               Name of task:

@@ -418,16 +418,16 @@ dbRefChores.on('child_added', function(snapshot){
                   {
                       label: 'Difficulty',
                       data: diffArray,
-                     backgroundColor: "rgba(52, 64, 58, 0.7)",
-                     hoverBackgroundColor: "rgba(52, 64, 58, 0.7)",
+                     backgroundColor: "rgba(123,150,119, 1)",
+                     hoverBackgroundColor: "rgba(123,150,119, 1)",
                      hoverBorderWidth: 2,
                      hoverBorderColor: 'lightgrey'
                   },
                   {
                       label: 'Priority',
                       data: prioArray,
-                     backgroundColor: "rgba(40, 82, 56, 0.7)",
-                     hoverBackgroundColor: "rgba(40, 82, 56, 0.7)",
+                     backgroundColor: "rgba(197,219,93, 1)",
+                     hoverBackgroundColor: "rgba(197,219,93, 1)",
                      hoverBorderWidth: 2,
                      hoverBorderColor: 'lightgrey'
                   },

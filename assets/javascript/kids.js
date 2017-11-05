@@ -89,34 +89,30 @@ $(document).ready(function() {
 
     //Updates message center with direct messages to kids from parents pulled from database
       dbRefKids.once('value', function (snapshot){
+        // console.log(snapshot.val());
         snapshot.forEach(function(msgsnap) {
           var recipient = msgsnap.key;
           var dm = msgsnap.val().messages;
-          // console.log(dm);
+          // console.log (dm);
+          if (dm){
           var msgFromParent = $('<div></div>');
           msgFromParent.addClass("message");
           msgFromParent.attr("id", dm);
-          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.val().messages + "'>Delete Message</button>");
+          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.key + "'>Delete Message</button>");
           $("#message").append(msgFromParent);
+          }
         });
       });
 
-      // delete message buttons - supposed to delete messages from the db, but not currently working
+      // delete message buttons
       $('#message').on('click', 'button', function() {
+        console.log(this.id);
         var dbRefUser = dbRefRoot.child(activeUser);
         var dbRefKids = dbRefUser.child("children");
-        var dbRefMessages = dbRefKids.child("messages");
-        var buttonId = this.id;
-        console.log(buttonId);
-        console.log(dbRefMessages.child(buttonId).key);
-        dbRefKids.child(this.id).remove();
+        var dbRefMsgToDelete = dbRefKids.child(this.id);
+        console.log(dbRefMsgToDelete.key);
+        dbRefMsgToDelete.child('messages').remove();
         });
-
-
-
-
-
-
 
       //sets values for the selector list identifying who's requesting a reward
      dbRefKids.once("value", function(snapshot) {
@@ -128,6 +124,7 @@ $(document).ready(function() {
          }).appendTo(requestlist);
        });
      });
+
 
      //Child can request a reward from parents
     $("#request-reward-button").click(requestReward);
@@ -149,7 +146,7 @@ $(document).ready(function() {
 
     //Generate dropdown list of children for check in
     var checklist = $("#whoCheckIn");
-    dbRefKids.once("value", function(snapshot) {
+    dbRefUser.once("child_added", function(snapshot) {
       snapshot.forEach(function(kidsnap) {
         var name = kidsnap.key;
         $('<option />', {
@@ -160,16 +157,16 @@ $(document).ready(function() {
     });
 
       //Generate dropdown list of children for request
-      var requestlist = $("#whoRequest");
-      dbRefKids.once("value", function(snapshot) {
-        snapshot.forEach(function(rewardsnap) {
-          var requester = rewardsnap.key;
-          $('<option />', {
-            value: requester,
-            text: requester
-          }).appendTo(requestlist);
-        });
+    var requestlist = $("#whoRequest");
+    dbRefUser.once("child_added", function(snapshot) {
+      snapshot.forEach(function(rewardsnap) {
+        var requester = rewardsnap.key;
+        $('<option />', {
+          value: requester,
+          text: requester
+        }).appendTo(requestlist);
       });
+    });
 
       //Generate task div for each child of "children"
       var kidsTasks = $("#kidTasks");
@@ -290,7 +287,6 @@ $(document).ready(function() {
 
   //onClick of Message Parents Button
   $("#message-parents-button").click(messageParents);
-
   function messageParents () {
     var msg = prompt("Enter your message:");
     var dbRefUser = dbRefRoot.child(activeUser);

@@ -19,8 +19,6 @@ $(document).ready( function(){
       //Function create user
       const createUser = function (userID, userName, email){
         dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}});
-        //dbRefRoot.child(userID).update({"children": null});
-        //dbRefRoot.child(userID).update({"messages": null});
       }
 
       //onAuthStateChanged listens for state to change to either logged in or logged out
@@ -59,7 +57,7 @@ $(document).ready( function(){
 
     		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
-				var newKid = $('<div></div>'); //Creates new div
+        var newKid = $('<div></div>'); //Creates new div
 				newKid.addClass("kids");
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid btn btn-light btn-sm' id='"+snapshot.key+"'>Message "+snapshot.key+"</button><button class='rmvKid btn btn-light btn-sm' id='"+snapshot.key+"'>Remove "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
@@ -69,11 +67,10 @@ $(document).ready( function(){
         //Updates message center with messages from kids pulled from database
         dbRefMessages.on('child_added', function (snapshot){
           var message = snapshot.val();
-          console.log(message);
           var msgFromKid = $('<div></div>');
             msgFromKid.addClass("message");
-            msgFromKid.html("<p class='message'>" + snapshot.val() + "</p><button class='button btn-light btn-sm' id='"+snapshot.val()+"'>Remove</button>");
-            msgFromKid.attr("id", snapshot.val());
+            msgFromKid.html("<p class='message'>" + message + "</p><button class='button btn-light btn-sm' id='"+message+"'>Remove</button>");
+            msgFromKid.attr("id", snapshot.key);
             $("#messages").append(msgFromKid);
           });
 
@@ -84,10 +81,8 @@ $(document).ready( function(){
             var dbRefMessage = dbRefUser.child('messages');
             console.log(dbRefMessage.key);
             var dbRefMsgToDelete = dbRefMessage.child('message');
-            console.log(dbRefMsgToDelete.key);
-            console.log(dbRefMsgToDelete.child(this.id));
-            // dbRefMsgToDelete.child(this.id).remove();
-            // console.log(this.id);
+            console.log(dbRefMessage.child);
+            dbRefMessage.child('message').remove();
           });
 
       //enables on click listen for dynamically created buttons
@@ -97,16 +92,16 @@ $(document).ready( function(){
         dbRefKids.child(this.id).update({"messages":dm});
       });
 
-
       //Creates buttons for each requested reward from db
         dbRefKids.on('child_added', function(snapshot){
           if (snapshot.val().reward) {
+            var requester = snapshot.key;
             var rewardRequest = $('<div></div>'); //Creates new div
             var request = snapshot.val().reward;
             rewardRequest.addClass("rewardButtonClass");
-            rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
+            // rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
             rewardRequest.attr("id",snapshot.key);
-            $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+request+'</button>');
+            $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+ requester +"<p> requests: </p>" +request+'</button>');
           };
       });
 
@@ -141,35 +136,62 @@ $(document).ready( function(){
 			});
 
 			//Generate dropdown list of children
+      var name;
 			var list = $("#forWhom");
 			dbRefKids.once("value", function(snapshot){
 				snapshot.forEach(function(child){
-					var name = child.key;
+					name = child.key;
 					$('<option />', {value: name, text: name}).appendTo(list);
 				});
 			});
 
-			//Updates complete with completed chores
-			dbRefChores.on('child_added', function(snapshot){
-				if(snapshot.val().done){
+			//Updates complete with completed chores for today
+      var theDate = new Date();
+      var today = (theDate.getMonth()+1) + "-" +theDate.getDate();
+      var dbRefHisto = dbRefUser.child("history");
+      var dbRefToday = dbRefHisto.child(today);
+      var kid;
+      var points;
+			dbRefToday.on('child_added', function(snapshot){
+          points = parseInt(Object.values(snapshot.val()));
+          kid = Object.keys(snapshot.val()).toString();
 					var newChore = $('<div></div>'); //Creates new div
-					var points = snapshot.val().Total;
-					newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+					newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><p>For: "+kid+"</p>"); //Updates text of kid
 					newChore.addClass("done");
-					newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#complete").append(newChore);
-				}
 			});
+
 
         }
         else {
           // console.log("Not logged in"); //Use to confirm logout in development
           btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
         }
-      });
+
+
+        //Generate Point Management for parents
+        var pointManagement = $("#point-management");
+        var kid;
+        var newDiv;
+        var dispPoints;
+        var newSub
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefKids = dbRefUser.child("children");
+        dbRefKids.once("value", function(snapshot){
+          snapshot.forEach( function(divsnap) {
+            dispPoints = divsnap.val().points;
+            kid = divsnap.key;
+            console.log(kid);
+            newDiv = $("<div></div>");
+            newDiv.text ( kid + ' has earned ' + dispPoints + ' points');
+            newDiv.attr("id", "div"+kid);
+            newDiv.appendTo(pointManagement);
+          });
+        });
+      });  // END OF onAuthStateChanged listens for state to change to either logged in or logged out
+//----------------------------------------------------------------------------------------------------
 
       var activeUser;
-
       //onClick event for Logout button
       btnSignOut.on("click", function(){
         firebase.auth().signOut();
@@ -203,7 +225,6 @@ $(document).ready( function(){
       		}
       });
 
-
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
       	var dbRefUser = dbRefRoot.child(activeUser);
@@ -217,7 +238,6 @@ $(document).ready( function(){
         var dbRefChores = dbRefUser.child("chores");
         dbRefChores.child(this.id).remove();
       });
-
 
       firebase.auth().onAuthStateChanged(function(currentUser){
 

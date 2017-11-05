@@ -103,7 +103,7 @@ $(document).ready( function(){
             rewardRequest.addClass("rewardButtonClass");
             // rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
             rewardRequest.attr("id",snapshot.key);
-            $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+ requester +"<p> requests </p>" +request+'</button>');
+            $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+ requester +"<p> requests: </p>" +request+'</button>');
           };
       });
 

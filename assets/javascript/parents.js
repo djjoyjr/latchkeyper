@@ -66,22 +66,29 @@ $(document).ready( function(){
 				$("#listOfKids").append(newKid);
 			});
 
-        //Updates listOfKids on kid removal
-      dbRefKids.on('child_removed', function(snapshot){
-        const kidRemove = $("#"+snapshot.key);
-        kidRemove.remove();
-      });
-
         //Updates message center with messages from kids pulled from database
         dbRefMessages.on('child_added', function (snapshot){
           var message = snapshot.val();
+          console.log(message);
           var msgFromKid = $('<div></div>');
             msgFromKid.addClass("message");
-            msgFromKid.html(snapshot.val());
+            msgFromKid.html("<p class='message'>" + snapshot.val() + "</p><button class='button btn-light btn-sm' id='"+snapshot.val()+"'>Remove</button>");
             msgFromKid.attr("id", snapshot.val());
             $("#messages").append(msgFromKid);
           });
 
+          //Removes message from kids from db on click
+          $("#messages").on("click", "button", function(){
+            console.log(this.id);
+            var dbRefUser = dbRefRoot.child(activeUser);
+            var dbRefMessage = dbRefUser.child('messages');
+            console.log(dbRefMessage.key);
+            var dbRefMsgToDelete = dbRefMessage.child('message');
+            console.log(dbRefMsgToDelete.key);
+            console.log(dbRefMsgToDelete.child(this.id));
+            // dbRefMsgToDelete.child(this.id).remove();
+            // console.log(this.id);
+          });
 
       //enables on click listen for dynamically created buttons
       //sends message to whichever kid's button the parent clicks on
@@ -112,7 +119,6 @@ $(document).ready( function(){
         var dbRefRewards = dbRefKids.child(kid);
         dbRefRewards.child("reward").remove();
       });
-
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
@@ -197,21 +203,15 @@ $(document).ready( function(){
       		}
       });
 
-      //onClick of removeChore for chores not yet completed
-      $("#listOfKids").on("click", ".rmvKid", function(){
-        var dbRefUser = dbRefRoot.child(activeUser);
-        var dbRefKids = dbRefUser.child("children");
-        dbRefKids.child(this.id).remove();
-      });
 
-      //onClick of removeChore for chores not yet completed
-      $("#listOfChores").on("click", ".rmvChore", function(){
+      //onClick of removeChore
+      $("#listOfChores").on("click", "button", function(){
       	var dbRefUser = dbRefRoot.child(activeUser);
       	var dbRefChores = dbRefUser.child("chores");
       	dbRefChores.child(this.id).remove();
       });
 
-      //onClick of removeChore for completed chore (will be removed later)
+      //onClick of removeChore
       $("#complete").on("click", "button", function(){
         var dbRefUser = dbRefRoot.child(activeUser);
         var dbRefChores = dbRefUser.child("chores");

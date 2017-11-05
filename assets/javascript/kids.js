@@ -102,7 +102,7 @@ $(document).ready(function() {
         });
       });
 
-      $('#deleteMessage').on('click', 'button', function() {
+      $('.text-center').on('click', '#deleteMessage', function() {
         alert("you are clicking a button");
         // console.log(dbRefKids.child.messages);
         // dbRefKids.child(messages).remove();

@@ -104,7 +104,7 @@ $(document).ready(function() {
         });
       });
 
-      // delete message buttons 
+      // delete message buttons
       $('#message').on('click', 'button', function() {
         console.log(this.id);
         var dbRefUser = dbRefRoot.child(activeUser);
@@ -114,22 +114,6 @@ $(document).ready(function() {
         dbRefMsgToDelete.child('messages').remove();
         });
 
-
-
-
-
-
-
-      //sets values for the selector list identifying who's requesting a reward
-     dbRefKids.once("value", function(snapshot) {
-       snapshot.forEach(function(rewardsnap) {
-         var requester = rewardsnap.key;
-         $('<option />', {
-           value: requester,
-           text: requester
-         }).appendTo(requestlist);
-       });
-     });
 
      //Child can request a reward from parents
     $("#request-reward-button").click(requestReward);
@@ -151,7 +135,7 @@ $(document).ready(function() {
 
     //Generate dropdown list of children for check in
     var checklist = $("#whoCheckIn");
-    dbRefKids.once("value", function(snapshot) {
+    dbRefUser.once("child_added", function(snapshot) {
       snapshot.forEach(function(kidsnap) {
         var name = kidsnap.key;
         $('<option />', {
@@ -162,16 +146,16 @@ $(document).ready(function() {
     });
 
       //Generate dropdown list of children for request
-      var requestlist = $("#whoRequest");
-      dbRefKids.once("value", function(snapshot) {
-        snapshot.forEach(function(rewardsnap) {
-          var requester = rewardsnap.key;
-          $('<option />', {
-            value: requester,
-            text: requester
-          }).appendTo(requestlist);
-        });
+    var requestlist = $("#whoRequest");
+    dbRefUser.once("child_added", function(snapshot) {
+      snapshot.forEach(function(rewardsnap) {
+        var requester = rewardsnap.key;
+        $('<option />', {
+          value: requester,
+          text: requester
+        }).appendTo(requestlist);
       });
+    });
 
       //Generate task div for each child of "children"
       var kidsTasks = $("#kidTasks");

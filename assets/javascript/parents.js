@@ -94,12 +94,10 @@ $(document).ready( function(){
         dbRefKids.child(this.id).update({"messages":dm});
       });
 
-
       //Creates buttons for each requested reward from db
         dbRefKids.on('child_added', function(snapshot){
           if (snapshot.val().reward) {
             var requester = snapshot.key;
-            console.log(requester);
             var rewardRequest = $('<div></div>'); //Creates new div
             var request = snapshot.val().reward;
             rewardRequest.addClass("rewardButtonClass");
@@ -159,16 +157,35 @@ $(document).ready( function(){
 				$("#complete").append(newChore);
 				}
 			});
-
         }
         else {
           // console.log("Not logged in"); //Use to confirm logout in development
           btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
         }
-      });
+
+        //Generate Point Management for parents
+        var pointManagement = $("#point-management");
+        var kid;
+        var newDiv;
+        var dispPoints;
+        var newSub
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefKids = dbRefUser.child("children");
+        dbRefKids.once("value", function(snapshot){
+          snapshot.forEach( function(divsnap) {
+            dispPoints = divsnap.val().points;
+            kid = divsnap.key;
+            console.log(kid);
+            newDiv = $("<div></div>");
+            newDiv.text ( kid + ' has earned ' + dispPoints + ' points');
+            newDiv.attr("id", "div"+kid);
+            newDiv.appendTo(pointManagement);
+          });
+        });
+      });  // END OF onAuthStateChanged listens for state to change to either logged in or logged out
+//----------------------------------------------------------------------------------------------------
 
       var activeUser;
-
       //onClick event for Logout button
       btnSignOut.on("click", function(){
         firebase.auth().signOut();
@@ -202,7 +219,6 @@ $(document).ready( function(){
       		}
       });
 
-
       //onClick of removeChore
       $("#listOfChores").on("click", "button", function(){
       	var dbRefUser = dbRefRoot.child(activeUser);
@@ -216,7 +232,6 @@ $(document).ready( function(){
         var dbRefChores = dbRefUser.child("chores");
         dbRefChores.child(this.id).remove();
       });
-
 
       firebase.auth().onAuthStateChanged(function(currentUser){
 

@@ -54,6 +54,8 @@ $(document).ready( function(){
     		var dbRefUser = dbRefRoot.child(activeUser);
     		var dbRefKids = dbRefUser.child("children");
     		var dbRefChores = dbRefUser.child("chores");
+        var dbRefMessages = dbRefUser.child("messages");
+
 
     		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
@@ -62,14 +64,39 @@ $(document).ready( function(){
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid btn btn-light btn-sm' id='"+snapshot.key+"'>Message "+snapshot.key+"</button><button class='rmvKid btn btn-light btn-sm' id='"+snapshot.key+"'>Remove "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
-        // console.log();
 			});
 
+        //Updates message center with messages from kids pulled from database
+        dbRefMessages.on('child_added', function (snapshot){
+          var message = snapshot.val();
+          console.log(message);
+          var msgFromKid = $('<div></div>');
+            msgFromKid.addClass("message");
+            msgFromKid.html("<p class='message'>" + snapshot.val() + "</p><button class='button btn-light btn-sm' id='"+snapshot.val()+"'>Remove</button>");
+            msgFromKid.attr("id", snapshot.val());
+            $("#messages").append(msgFromKid);
+          });
+
+          //Removes message from kids from db on click
+          $("#messages").on("click", "button", function(){
+            console.log(this.id);
+            var dbRefUser = dbRefRoot.child(activeUser);
+            var dbRefMessage = dbRefUser.child('messages');
+            console.log(dbRefMessage.key);
+            var dbRefMsgToDelete = dbRefMessage.child('message');
+            console.log(dbRefMsgToDelete.key);
+            console.log(dbRefMsgToDelete.child(this.id));
+            // dbRefMsgToDelete.child(this.id).remove();
+            // console.log(this.id);
+          });
+
       //enables on click listen for dynamically created buttons
+      //sends message to whichever kid's button the parent clicks on
       $('#children').on('click', ".msgKid", function() {
         var dm = prompt("Enter your message:");
-        dbRefKids.child(this.id).push(dm);
+        dbRefKids.child(this.id).update({"messages":dm});
       });
+
 
       //Creates buttons for each requested reward from db
         dbRefKids.on('child_added', function(snapshot){
@@ -86,18 +113,12 @@ $(document).ready( function(){
       //Removes request from db on click
       $("#reward-requests").on("click", "button", function(){
         var dbRefUser = dbRefRoot.child(activeUser);
-        // console.log(dbRefUser.key)
       	var dbRefKids = dbRefUser.child("children");
-        // console.log(dbRefKids.key);
         console.log(this.id);
         var kid = this.id;
         var dbRefRewards = dbRefKids.child(kid);
         dbRefRewards.child("reward").remove();
-
-        //dbRefRewards.child(thing).remove();
-
       });
-
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
@@ -142,7 +163,7 @@ $(document).ready( function(){
 
         }
         else {
-          console.log("Not logged in"); //Use to confirm logout in development
+          // console.log("Not logged in"); //Use to confirm logout in development
           btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
         }
       });
@@ -217,7 +238,7 @@ $(document).ready( function(){
           spawnName = child.key;
 
           spawnArray.push(spawnName);
-          console.log(spawnArray);
+          // console.log(spawnArray);
         });
 
         $('#nameOne').html(spawnArray[0]);
@@ -267,7 +288,7 @@ dbRefChores.on('child_added', function(snapshot){
                              + currentdate.getMinutes() + ":"
                              + currentdate.getSeconds();
 
-                             console.log(datetime);
+                            //  console.log(datetime);
                              dates.push(datetime);
 
             // console.log(child.val().Total);
@@ -283,7 +304,7 @@ dbRefChores.on('child_added', function(snapshot){
             // console.log(prioArray);
 
             totalArray.push(total);
-            console.log(totalArray);
+            // console.log(totalArray);
 
             //start chart data
             var numberWithCommas = function(x) {
@@ -302,7 +323,7 @@ dbRefChores.on('child_added', function(snapshot){
 
 
 
-            console.log(total);
+            // console.log(total);
 
 
 
@@ -380,10 +401,11 @@ dbRefChores.on('child_added', function(snapshot){
              });
 
 
+
             //end firstchart
             //start second chart
 
-          
+
 
             new Chart(document.getElementById("line-chart"), {
   type: 'line',
@@ -428,14 +450,9 @@ dbRefChores.on('child_added', function(snapshot){
           });//end forEach function
 }); //just added
 }//just added 2
+
        });
      }
-
-
-
   });
-
-
-
 //end Ani Learning
 });//End of document.ready

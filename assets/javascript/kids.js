@@ -47,7 +47,7 @@ $(document).ready(function() {
       var dbRefUser = dbRefRoot.child(activeUser);
       var dbRefKids = dbRefUser.child("children");
       var dbRefChores = dbRefUser.child("chores");
-
+      var dbRefMessages = dbRefKids.child("messages");
 
       //Updates listOfChores when chore added (or on load)
       dbRefChores.on('child_added', function(snapshot) {
@@ -56,6 +56,7 @@ $(document).ready(function() {
         newChore.addClass("chores");
         newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
         $("#listOfChores").append(newChore);
+        // console.log(newChore);
       });
 
       //Updates listOfChores on chore removal
@@ -69,14 +70,12 @@ $(document).ready(function() {
       btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
     }
     //on click of the Check In button
-    //this writes to the jumbotron on this page, but will need to write to the parents page eventually
     $("#check-in-button").click(checkIn);
-
     function checkIn() {
       var checkingIn = new Date();
       var kidname = $("#whoCheckIn").val();
-      if (dbRefUser.child("children").child(kidname)) {
-        dbRefUser.child("children").child(kidname).update({
+      if (dbRefKids.child(kidname)) {
+        dbRefKids.child(kidname).update({
           "checkIn": checkingIn
         });
       } else {
@@ -87,8 +86,51 @@ $(document).ready(function() {
         });
       }
     };
-    $("#request-reward-button").click(requestReward);
 
+    //Updates message center with direct messages to kids from parents pulled from database
+      dbRefKids.once('value', function (snapshot){
+        snapshot.forEach(function(msgsnap) {
+          var recipient = msgsnap.key;
+          var dm = msgsnap.val().messages;
+          // console.log(dm);
+          var msgFromParent = $('<div></div>');
+          msgFromParent.addClass("message");
+          msgFromParent.attr("id", dm);
+          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.val().messages + "'>Delete Message</button>");
+          $("#message").append(msgFromParent);
+        });
+      });
+
+      // delete message buttons - supposed to delete messages from the db, but not currently working
+      $('#message').on('click', 'button', function() {
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefKids = dbRefUser.child("children");
+        var dbRefMessages = dbRefKids.child("messages");
+        var buttonId = this.id;
+        console.log(buttonId);
+        console.log(dbRefMessages.child(buttonId).key);
+        dbRefKids.child(this.id).remove();
+        });
+
+
+
+
+
+
+
+      //sets values for the selector list identifying who's requesting a reward
+     dbRefKids.once("value", function(snapshot) {
+       snapshot.forEach(function(rewardsnap) {
+         var requester = rewardsnap.key;
+         $('<option />', {
+           value: requester,
+           text: requester
+         }).appendTo(requestlist);
+       });
+     });
+
+     //Child can request a reward from parents
+    $("#request-reward-button").click(requestReward);
     function requestReward() {
       var rewardRequest = prompt("Request a reward: ");
       var requester = $("#whoRequest").val();
@@ -109,13 +151,13 @@ $(document).ready(function() {
     var checklist = $("#whoCheckIn");
     dbRefKids.once("value", function(snapshot) {
       snapshot.forEach(function(kidsnap) {
-      var name = kidsnap.key;
-      $('<option />', {
-        value: name,
-        text: name
-      }).appendTo(checklist);
+        var name = kidsnap.key;
+        $('<option />', {
+          value: name,
+          text: name
+        }).appendTo(checklist);
       });
-      });
+    });
 
       //Generate dropdown list of children for request
       var requestlist = $("#whoRequest");
@@ -128,7 +170,6 @@ $(document).ready(function() {
           }).appendTo(requestlist);
         });
       });
-
 
       //Generate task div for each child of "children"
       var kidsTasks = $("#kidTasks");
@@ -163,11 +204,11 @@ $(document).ready(function() {
           taskDiv = $("<div></div>");
           points = tasksnap.val().Total;
           who = tasksnap.val().For;
-          console.log(who);
+          // console.log(who);
           taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
           taskDiv.addClass("chores");
           taskDiv.attr("id", "chore-div");
-          console.log(taskDiv);
+          // console.log(taskDiv);
           $(taskDiv).appendTo('#div'+who);
           }
         });
@@ -176,34 +217,35 @@ $(document).ready(function() {
       //onClick of Complete Chore
       $("#kidTasks").on("click", "button", function() {
         var kid = this.className;
-        console.log(kid);
+        // console.log(kid);
         var chore = this.id;
         var pointsAdd;
         var pointTotal;
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth()+1;
+        var monthDay = month + "-" + day;
+        var dbRefHist = dbRefUser.child("history");
+        var dbRefDay = dbRefHist.child(monthDay);
         dbRefChores.child(chore).update({"done": true});
         dbRefChores.once("value", function(snapshot){
             pointsAdd = snapshot.child(chore).val().Total;
-            console.log(pointsAdd);
+            // console.log(pointsAdd);
         });
         dbRefKids.once("value",function(snapshot){
           pointTotal =snapshot.child(kid).val().points;
           pointTotal += pointsAdd;
-          console.log(pointTotal);
           dbRefKids.child(kid).update({"points": pointTotal});
+          if(dbRefDay){
+            dbRefDay.update({[chore]:{[kid]:pointsAdd}});
+          }
+          else {
+          dbRefUser.update({"history":{[monthDay]:{[chore]:{[kid]:pointsAdd}}}});
+        }
         });
-    
       });
-
-
-
-
   });
 
-  // //this writes to the jumbotron on this page, but will need to write to the parents page eventually
-  // function messageParents () {
-  //   var msg = prompt("Enter your message:");
-  //   $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
-  // }
 
   var activeUser;
 
@@ -243,21 +285,16 @@ $(document).ready(function() {
     }
   });
 
-  //onClick of addMessage
-  $("#message-child-button").click(messageChild);
 
-  function messageChild() {
+  //onClick of Message Parents Button
+  $("#message-parents-button").click(messageParents);
+
+  function messageParents () {
     var msg = prompt("Enter your message:");
     var dbRefUser = dbRefRoot.child(activeUser);
-    if (dbRefUser.child("messages")) {
-      dbRefUser.child("mesages").push(msg);
-    } else {
-      dbRefUser.push({
-        "messages": msg
-      });
-    }
-    $("#messages").append("<div>" + msg + "<span id='delete'>X</span></div>");
+    dbRefUser.child("messages").update({"message":msg});
   };
+
 
   //onClick of removeChore
   $("#listOfChores").on("click", "button", function() {
@@ -266,6 +303,6 @@ $(document).ready(function() {
     dbRefChores.child(this.id).remove();
   });
 
-  
+
 
 }); //End of document.ready

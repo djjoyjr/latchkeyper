@@ -19,8 +19,6 @@ $(document).ready( function(){
       //Function create user
       const createUser = function (userID, userName, email){
         dbRefRoot.child(userID).set({"parent":{"name": userName, "email": email}});
-        //dbRefRoot.child(userID).update({"children": null});
-        //dbRefRoot.child(userID).update({"messages": null});
       }
 
       //onAuthStateChanged listens for state to change to either logged in or logged out
@@ -138,33 +136,45 @@ $(document).ready( function(){
 			});
 
 			//Generate dropdown list of children
+      var name;
 			var list = $("#forWhom");
 			dbRefKids.once("value", function(snapshot){
 				snapshot.forEach(function(child){
-					var name = child.key;
+					name = child.key;
 					$('<option />', {value: name, text: name}).appendTo(list);
 				});
 			});
 
-			//Updates complete with completed chores
-			dbRefChores.on('child_added', function(snapshot){
-				if(snapshot.val().done){
+			//Updates complete with completed chores for today
+      var theDate = new Date();
+      var today = (theDate.getMonth()+1) + "-" +theDate.getDate();
+      var dbRefHisto = dbRefUser.child("history");
+      var dbRefToday = dbRefHisto.child(today);
+      var kid;
+      var points;
+			dbRefToday.on('child_added', function(snapshot){
+          points = parseInt(Object.values(snapshot.val()));
+          kid = Object.keys(snapshot.val()).toString();
 					var newChore = $('<div></div>'); //Creates new div
-					var points = snapshot.val().Total;
-					newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><button class='rmvChore' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
+					newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><p>For: "+kid+"</p>"); //Updates text of kid
 					newChore.addClass("done");
-					newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#complete").append(newChore);
-				}
 			});
+
+
         }
         else {
           // console.log("Not logged in"); //Use to confirm logout in development
           btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
         }
 
+
         //Display kids' points for parents
         var pointDisplay = $("#point-display");
+
+
+        //Generate Point Management for parents
+        var pointManagement = $("#point-management");
         var kid;
         var pointsDiv;
         var dispPoints;

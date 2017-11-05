@@ -86,8 +86,7 @@ $(document).ready( function(){
             var dbRefMsgToDelete = dbRefMessage.child('message');
             console.log(dbRefMsgToDelete.key);
             console.log(dbRefMsgToDelete.child(this.id));
-            // dbRefMsgToDelete.child(this.id).remove();
-            // console.log(this.id);
+            dbRefMsgToDelete.child(this.id).remove();
           });
 
       //enables on click listen for dynamically created buttons

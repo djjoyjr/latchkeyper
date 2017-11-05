@@ -89,15 +89,18 @@ $(document).ready(function() {
 
     //Updates message center with direct messages to kids from parents pulled from database
       dbRefKids.once('value', function (snapshot){
+        // console.log(snapshot.val());
         snapshot.forEach(function(msgsnap) {
           var recipient = msgsnap.key;
           var dm = msgsnap.val().messages;
-          // console.log(dm);
+          // console.log (dm);
+          if (dm){
           var msgFromParent = $('<div></div>');
           msgFromParent.addClass("message");
           msgFromParent.attr("id", dm);
-          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.val().messages + "'>Delete Message</button>");
+          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.key + "'>Delete Message</button>");
           $("#message").append(msgFromParent);
+          }
         });
       });
 
@@ -105,11 +108,9 @@ $(document).ready(function() {
       $('#message').on('click', 'button', function() {
         var dbRefUser = dbRefRoot.child(activeUser);
         var dbRefKids = dbRefUser.child("children");
-        var dbRefMessages = dbRefKids.child("messages");
-        var buttonId = this.id;
-        console.log(buttonId);
-        console.log(dbRefMessages.child(buttonId).key);
-        dbRefKids.child(this.id).remove();
+        var dbRefMsgToDelete = dbRefKids.child(this.id);
+        console.log(dbRefMsgToDelete.key);
+        dbRefMsgToDelete.child('messages').remove();
         });
 
 
@@ -288,7 +289,6 @@ $(document).ready(function() {
 
   //onClick of Message Parents Button
   $("#message-parents-button").click(messageParents);
-
   function messageParents () {
     var msg = prompt("Enter your message:");
     var dbRefUser = dbRefRoot.child(activeUser);

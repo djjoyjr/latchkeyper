@@ -59,29 +59,33 @@ $(document).ready( function(){
 
     		//Updates listOfKids when child added (or on load)
     		dbRefKids.on('child_added', function(snapshot){
-				var newKid = $('<div></div>'); //Creates new div
+        var newKid = $('<div></div>'); //Creates new div
 				newKid.addClass("kids");
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid btn btn-light btn-sm' id='"+snapshot.key+"'>Message "+snapshot.key+"</button><button class='rmvKid btn btn-light btn-sm' id='"+snapshot.key+"'>Remove "+snapshot.key+"</button>");
 				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
 				$("#listOfKids").append(newKid);
 			});
 
-        //Updates listOfKids on kid removal
-      dbRefKids.on('child_removed', function(snapshot){
-        const kidRemove = $("#"+snapshot.key);
-        kidRemove.remove();
-      });
-
         //Updates message center with messages from kids pulled from database
         dbRefMessages.on('child_added', function (snapshot){
           var message = snapshot.val();
           var msgFromKid = $('<div></div>');
             msgFromKid.addClass("message");
-            msgFromKid.html(snapshot.val());
-            msgFromKid.attr("id", snapshot.val());
+            msgFromKid.html("<p class='message'>" + message + "</p><button class='button btn-light btn-sm' id='"+message+"'>Remove</button>");
+            msgFromKid.attr("id", snapshot.key);
             $("#messages").append(msgFromKid);
           });
 
+          //Removes message from kids from db on click
+          $("#messages").on("click", "button", function(){
+            console.log(this.id);
+            var dbRefUser = dbRefRoot.child(activeUser);
+            var dbRefMessage = dbRefUser.child('messages');
+            console.log(dbRefMessage.key);
+            var dbRefMsgToDelete = dbRefMessage.child('message');
+            console.log(dbRefMessage.child);
+            dbRefMessage.child('message').remove();
+          });
 
       //enables on click listen for dynamically created buttons
       //sends message to whichever kid's button the parent clicks on
@@ -112,7 +116,6 @@ $(document).ready( function(){
         var dbRefRewards = dbRefKids.child(kid);
         dbRefRewards.child("reward").remove();
       });
-
 
 			//Updates listOfChores when chore added (or on load)
     		dbRefChores.on('child_added', function(snapshot){
@@ -197,21 +200,15 @@ $(document).ready( function(){
       		}
       });
 
-      //onClick of removeChore for chores not yet completed
-      $("#listOfKids").on("click", ".rmvKid", function(){
-        var dbRefUser = dbRefRoot.child(activeUser);
-        var dbRefKids = dbRefUser.child("children");
-        dbRefKids.child(this.id).remove();
-      });
 
-      //onClick of removeChore for chores not yet completed
-      $("#listOfChores").on("click", ".rmvChore", function(){
+      //onClick of removeChore
+      $("#listOfChores").on("click", "button", function(){
       	var dbRefUser = dbRefRoot.child(activeUser);
       	var dbRefChores = dbRefUser.child("chores");
       	dbRefChores.child(this.id).remove();
       });
 
-      //onClick of removeChore for completed chore (will be removed later)
+      //onClick of removeChore
       $("#complete").on("click", "button", function(){
         var dbRefUser = dbRefRoot.child(activeUser);
         var dbRefChores = dbRefUser.child("chores");
@@ -248,6 +245,8 @@ $(document).ready( function(){
 
     }
      if(currentUser) {
+
+
           var dbRefRoot = firebase.database().ref();
           var dbRefUser = dbRefRoot.child(currentUser.uid);
           var dbRefChores = dbRefUser.child("chores");
@@ -265,8 +264,12 @@ var currentdate;
 var datetime;
 
 //end timestamp
+//new
+dbRefChores.on('child_added', function(snapshot){
+  if(snapshot.val().done){
 
        dbRefChores.on('value', function(snapshot){
+
           snapshot.forEach(function(child){
              diff = child.val().Diff;
              prio = child.val().Prio;
@@ -288,7 +291,10 @@ var datetime;
             // console.log(child.val().Total);
             // console.log(child.val().Diff);
             // console.log(child.val().Prio);
+
+
             diffArray.push(diff);
+
             // console.log(diffArray);
 
             prioArray.push(prio);
@@ -330,24 +336,24 @@ var datetime;
                   {
                       label: 'Difficulty',
                       data: diffArray,
-                     backgroundColor: "rgba(55, 160, 225, 0.7)",
-                     hoverBackgroundColor: "rgba(55, 160, 225, 0.7)",
+                     backgroundColor: "rgba(52, 64, 58, 0.7)",
+                     hoverBackgroundColor: "rgba(52, 64, 58, 0.7)",
                      hoverBorderWidth: 2,
                      hoverBorderColor: 'lightgrey'
                   },
                   {
                       label: 'Priority',
                       data: prioArray,
-                     backgroundColor: "rgba(225, 58, 55, 0.7)",
-                     hoverBackgroundColor: "rgba(225, 58, 55, 0.7)",
+                     backgroundColor: "rgba(40, 82, 56, 0.7)",
+                     hoverBackgroundColor: "rgba(40, 82, 56, 0.7)",
                      hoverBorderWidth: 2,
                      hoverBorderColor: 'lightgrey'
                   },
                   {
                     label: 'Time',
                     data: time,
-                    backgroundColor: "rgba(230, 72, 104, 0.7)",
-                      hoverBackgroundColor: "rgba(230, 72, 104, 0.7)",
+                    backgroundColor: "rgba(19, 138, 54, 0.7)",
+                      hoverBackgroundColor: "rgba(19, 138, 54, 0.7)",
                       hoverBorderWidth: 2,
                       hoverBorderColor: 'lightgrey'
 
@@ -392,8 +398,56 @@ var datetime;
              });
 
 
-            //end chart
-          });
+
+            //end firstchart
+            //start second chart
+
+
+
+            new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [{
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: spawnArray[0],
+        borderColor: "#3e95cd",
+        fill: false
+      }, {
+        data: [282,350,411,502,635,809,947,1402,3700,5267],
+        label: spawnArray[1],
+        borderColor: "#8e5ea2",
+        fill: false
+      }, {
+        data: [168,170,178,190,203,276,408,547,675,734],
+        label: spawnArray[2],
+        borderColor: "#3cba9f",
+        fill: false
+      }, {
+        data: [40,20,10,16,24,38,74,167,508,784],
+        label: spawnArray[3],
+        borderColor: "#e8c3b9",
+        fill: false
+      }, {
+        data: [6,3,2,2,7,26,82,172,312,433],
+        label: spawnArray[4],
+        borderColor: "#c45850",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Points Per Child Per Day'
+    }
+  }
+});//end second chart
+
+          });//end forEach function
+}); //just added
+}//just added 2
+
        });
      }
   });

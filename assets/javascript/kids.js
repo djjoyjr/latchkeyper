@@ -89,24 +89,31 @@ $(document).ready(function() {
 
     //Updates message center with direct messages to kids from parents pulled from database
       dbRefKids.once('value', function (snapshot){
+        // console.log(snapshot.val());
         snapshot.forEach(function(msgsnap) {
           var recipient = msgsnap.key;
-          // console.log(recipient);
           var dm = msgsnap.val().messages;
-          console.log(dm);
+          // console.log (dm);
+          if (dm){
           var msgFromParent = $('<div></div>');
           msgFromParent.addClass("message");
-          msgFromParent.html(recipient + ": " + dm + '<button type="button" id="deleteMessage">Delete Message</button>');
-          // msgFromParent.attr("id", snapshot.val());
+          msgFromParent.attr("id", dm);
+          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.key + "'>Delete Message</button>");
           $("#message").append(msgFromParent);
+          }
         });
       });
 
-      $('.text-center').on('click', '#deleteMessage', function() {
-        alert("you are clicking a button");
-        // console.log(dbRefKids.child.messages);
-        // dbRefKids.child(messages).remove();
-      });
+
+      // delete message buttons 
+      $('#message').on('click', 'button', function() {
+        console.log(this.id);
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefKids = dbRefUser.child("children");
+        var dbRefMsgToDelete = dbRefKids.child(this.id);
+        console.log(dbRefMsgToDelete.key);
+        dbRefMsgToDelete.child('messages').remove();
+        });
 
 
       //sets values for the selector list identifying who's requesting a reward
@@ -205,25 +212,6 @@ $(document).ready(function() {
         });
       });
 
-      dbRefChores.onUpdate(function(snapshot){
-        snapshot.forEach(function(tasksnap){
-          if(tasksnap.val().done){}
-          else {
-          taskDiv = $("<div></div>");
-          points = tasksnap.val().Total;
-          who = tasksnap.val().For;
-          console.log(who);
-          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
-          taskDiv.addClass("chores");
-          taskDiv.attr("id", "chore-div");
-          console.log(taskDiv);
-          $(taskDiv).appendTo('#div'+who);
-          }
-        });
-      });
-      
-
-
       //onClick of Complete Chore
       $("#kidTasks").on("click", "button", function() {
         var kid = this.className;
@@ -298,7 +286,6 @@ $(document).ready(function() {
 
   //onClick of Message Parents Button
   $("#message-parents-button").click(messageParents);
-
   function messageParents () {
     var msg = prompt("Enter your message:");
     var dbRefUser = dbRefRoot.child(activeUser);

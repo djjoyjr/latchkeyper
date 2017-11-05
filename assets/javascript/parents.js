@@ -373,15 +373,7 @@ dbRefChores.on('child_added', function(snapshot){
                      hoverBorderWidth: 2,
                      hoverBorderColor: 'lightgrey'
                   },
-                  {
-                    label: 'Time',
-                    data: time,
-                    backgroundColor: "rgba(19, 138, 54, 0.7)",
-                      hoverBackgroundColor: "rgba(19, 138, 54, 0.7)",
-                      hoverBorderWidth: 2,
-                      hoverBorderColor: 'lightgrey'
 
-                  },
                   {
                     label: 'Total',
                     data: total,
@@ -429,6 +421,7 @@ dbRefChores.on('child_added', function(snapshot){
           var dayz = [];
           var spawnTot = [];
           var scoreTot = [];
+          var data = [];
 
 var dbRefHisto = dbRefUser.child("history");
 
@@ -437,34 +430,53 @@ var dbRefHisto = dbRefUser.child("history");
       histo = childSnapshot.val();
       dateHisto = childSnapshot.key;
       //console.log(dateHisto);
-      console.log(histo);
+      //console.log(histo);
+      data.push(histo);
+      //console.log(data);
 
       dayz.push(dateHisto);
       //console.log(dayz);
+    });
+
+    var dbRefHisto = dbRefUser.child("children");
+
+      dbRefHisto.on('child_added', function(childSnapshot){
 
 childSnapshot.forEach(function(child){
   pair = child.val();
+//  console.log(pair);
+
+  scoreTot.push(pair);
+  console.log(scoreTot);
 
 var kidNameTot = Object.keys(pair).toString();
 
 spawnTot.push(kidNameTot);
 //console.log(spawnTot);
 
-var pointTot = (parseInt(pair[kidNameTot]));
-  //(Object.values(pair)));
-
-scoreTot.push(pointTot);
-//console.log(scoreTot);
-
-
-// if (spawnTot[0] == spawnArray[i]){
-//   for(var i=0; i<scoreTot.length; i++){
-//     var pointTots = parseInt(pointTot) + parseInt(scoreTot[i]);
-//     //console.log(parseInt(pointTots));
-//     console.log(pointTots);
-//   }
+// var pointTot = (parseInt(pair[kidNameTot]));
+//   //(Object.values(pair)));
 //
-// }
+// scoreTot.push(pointTot);
+// //console.log(scoreTot);
+
+
+// var toLookBetter = {}
+// data.forEach(function(task){
+//   // console.log(Object.keys(task))
+//
+//    var task = task[Object.keys(task)]
+//    var kid = Object.keys(task)
+//    //console.log(kid[0])
+//    if( Object.keys(toLookBetter).includes(kid[0])){
+//     toLookBetter[kid[0]].push(task[kid])
+//    }else{
+//     toLookBetter[kid[0]] = []
+//     toLookBetter[kid[0]].push(task[kid])
+//    }
+// })
+//console.log(toLookBetter[kid[i]]);
+//console.log(task[kid]);
 
 });
 //console.log(scoreTot);
@@ -478,27 +490,27 @@ scoreTot.push(pointTot);
   data: {
     labels: dayz,
     datasets: [{
-        data: scoreTot,
+        data: spawnArray,
         label: spawnArray[0],
         borderColor: "#3e95cd",
         fill: false
       }, {
-        data: [40,20,10,16,24],
+        data: scoreTot,
         label: spawnArray[1],
         borderColor: "#8e5ea2",
         fill: false
       }, {
-        data: [40,20,10,16,24],
+        data: scoreTot,
         label: spawnArray[2],
         borderColor: "#3cba9f",
         fill: false
       }, {
-        data: [40,20,10,16,24,],
+        data: scoreTot,
         label: spawnArray[3],
         borderColor: "#e8c3b9",
         fill: false
       }, {
-        data: [6,3,2,2,7,26,3],
+        data: scoreTot,
         label: spawnArray[4],
         borderColor: "#c45850",
         fill: false

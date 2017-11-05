@@ -163,25 +163,81 @@ $(document).ready( function(){
           btnSignOut.css("visibility", "hidden"); //Hides logout button when not logged in
         }
 
-        //Generate Point Management for parents
-        var pointManagement = $("#point-management");
+        //Display kids' points for parents
+        var pointDisplay = $("#point-display");
         var kid;
-        var newDiv;
+        var pointsDiv;
         var dispPoints;
-        var newSub
         var dbRefUser = dbRefRoot.child(activeUser);
         var dbRefKids = dbRefUser.child("children");
         dbRefKids.once("value", function(snapshot){
           snapshot.forEach( function(divsnap) {
             dispPoints = divsnap.val().points;
             kid = divsnap.key;
-            console.log(kid);
-            newDiv = $("<div></div>");
-            newDiv.text ( kid + ' has earned ' + dispPoints + ' points');
-            newDiv.attr("id", "div"+kid);
-            newDiv.appendTo(pointManagement);
+            // console.log(kid);
+            pointsDiv = $("<div></div>");
+            pointsDiv.text ( kid + ' has earned ' + dispPoints + ' points');
+            pointsDiv.attr("id", "div"+kid);
+            pointsDiv.appendTo(pointDisplay);
           });
         });
+
+        //Generate button and dropdown list of children for point redemption
+      var redeemList = $("#redeem-points-list");
+      // var pointRedeem = $("#redeem-points");
+      var redeemDiv = $("<div></div>");
+      var ptsBtn = $("#redeem-points-button");
+      dbRefUser.once("child_added", function(snapshot) {
+        snapshot.forEach(function(rewardsnap) {
+          var requester = rewardsnap.key;
+          $('<option />', {
+            value: requester,
+            text: requester
+          }).appendTo(redeemList);
+          redeemDiv.appendTo(redeemList);
+        });
+      });
+        //Parent can manage kids' points here
+       $("#redeem-points").click(redeemPoints);
+       function redeemPoints() {
+         var kid = $("#redeem-points-list").val();
+        //  console.log(kid);
+         var pointsToRedeem = 0;
+         pointsToRedeem = prompt("How many of " + kid + "'s points would you like to redeem?");
+        var dbRefUser = dbRefRoot.child(activeUser);
+        var dbRefKids = dbRefUser.child("children");
+        var dbRefPoints = dbRefKids.child('points');
+        // console.log(dbRefPoints);
+        dbRefKids.once("value", function(snapshot) {
+          console.log(snapshot.val().points);
+            // var pointsAvailable = dbRefPoints.child('kid');
+            // //  console.log(pointsAvailable);
+            //  var totalPoints = dbRefKids.child('kid');
+            // //  console.log(totalPoints);
+            //  var whosePoints = dbRefUser.child(this.id);
+            //  console.log(whosePoints);
+
+
+
+              // $("#combat-updates").text(yourCharacter["name"] + " attacked " + defender ["name"] + " for " + currentAP + " points.");
+        			// yourCharacter["HP"] -= defender["CAP"];
+        			// $(".yourPlayerHP").text("HP: " + yourCharacter["HP"]);
+        			// defender["HP"] -= currentAP;
+        			// $(".yourDefenderHP").text("HP: " + defender["HP"]);
+        			// currentAP += yourCharacter["AP"];
+
+
+        });
+
+
+
+
+       };
+
+
+
+
+
       });  // END OF onAuthStateChanged listens for state to change to either logged in or logged out
 //----------------------------------------------------------------------------------------------------
 
@@ -243,8 +299,6 @@ $(document).ready( function(){
       var dbRefRoot = firebase.database().ref();
       var dbRefUser = dbRefRoot.child(currentUser.uid);
       var dbRefChildren = dbRefUser.child("children");
-
-
 
       dbRefChildren.on('value', function(snapshot) {
         // console.log("snapshot",snapshot)

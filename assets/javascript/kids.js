@@ -160,9 +160,12 @@ $(document).ready(function() {
       //Generate task div for each child of "children"
       var kidsTasks = $("#kidTasks");
       var kid;
+      var newSub;
       var newDiv;
       var newTitle;
       var dispPoints;
+      var dbRefUser = dbRefRoot.child(activeUser);
+      var dbRefKids = dbRefUser.child("children");
       dbRefKids.once("value", function(snapshot){
         snapshot.forEach( function(divsnap) {
           dispPoints = divsnap.val().points;
@@ -232,14 +235,12 @@ $(document).ready(function() {
       });
   });
 
-
   var activeUser;
 
   //onClick event for Logout button
   btnSignOut.on("click", function() {
     firebase.auth().signOut();
   });
-
 
   //onClick of addChore
   addChore.on("click", function() {
@@ -271,7 +272,6 @@ $(document).ready(function() {
     }
   });
 
-
   //onClick of Message Parents Button
   $("#message-parents-button").click(messageParents);
   function messageParents () {
@@ -279,7 +279,6 @@ $(document).ready(function() {
     var dbRefUser = dbRefRoot.child(activeUser);
     dbRefUser.child("messages").update({"message":msg});
   };
-
 
   //onClick of removeChore
   $("#listOfChores").on("click", "button", function() {

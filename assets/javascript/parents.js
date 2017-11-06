@@ -310,7 +310,7 @@ $(document).ready( function(){
      if (currentUser) {
       var spawnName;
       var spawnArray = [];
-
+      console.log(spawnArray);
       var dbRefRoot = firebase.database().ref();
       var dbRefUser = dbRefRoot.child(currentUser.uid);
       var dbRefChildren = dbRefUser.child("children");
@@ -510,7 +510,7 @@ childSnapshot.forEach(function(child){
 //  console.log(pair);
 
   scoreTot.push(pair);
-  // console.log(scoreTot);
+  console.log(scoreTot);
 
 var kidNameTot = Object.keys(pair).toString();
 
@@ -544,7 +544,7 @@ spawnTot.push(kidNameTot);
 });
 //console.log(scoreTot);
 
-  });
+
 //});
 
 
@@ -553,31 +553,33 @@ spawnTot.push(kidNameTot);
   data: {
     labels: dayz,
     datasets: [{
-        data: spawnArray,
+        data: scoreTot[0],
         label: spawnArray[0],
         borderColor: "#3e95cd",
         fill: false
       }, {
-        data: scoreTot,
+        data: scoreTot[1],
         label: spawnArray[1],
         borderColor: "#8e5ea2",
         fill: false
-      }, {
-        data: scoreTot,
-        label: spawnArray[2],
-        borderColor: "#12b99f",
-        fill: false
-      }, {
-        data: scoreTot,
-        label: spawnArray[3],
-        borderColor: "#7b9677",
-        fill: false
-      }, {
-        data: scoreTot,
-        label: spawnArray[4],
-        borderColor: "#c5db5ds",
-        fill: false
-      }
+      },
+      // {
+      //   data: scoreTot[2],
+      //   label: spawnArray[2],
+      //   borderColor: "#12b99f",
+      //   fill: false
+      // },
+      //  {
+      //   data: scoreTot[3],
+      //   label: spawnArray[3],
+      //   borderColor: "#7b9677",
+      //   fill: false
+      // }, {
+      //   data: scoreTot[4],
+      //   label: spawnArray[4],
+      //   borderColor: "#c5db5ds",
+      //   fill: false
+      // }
     ]
   },
   options: {
@@ -587,7 +589,7 @@ spawnTot.push(kidNameTot);
     }
   }
 });//end second chart
-
+});
           });//end forEach function
 }); //just added
 }//just added 2

@@ -61,7 +61,7 @@ $(document).ready( function(){
         var newKid = $('<div></div>'); //Creates new div
 				newKid.addClass("kids");
 				newKid.html("<p class='kids'>"+snapshot.key+"</p><button class='msgKid btn btn-light btn-sm' id='"+snapshot.key+"'>Message "+snapshot.key+"</button><button class='rmvKid btn btn-light btn-sm' id='"+snapshot.key+"'>Remove "+snapshot.key+"</button>");
-				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
+				newKid.attr("id", snapshot.key); //Sets id equal to key name of key:value pointsTotal
 				$("#listOfKids").append(newKid);
 			});
 
@@ -152,7 +152,7 @@ $(document).ready( function(){
         var kid = snapshot.val().For;
 				newChore.html("<p class='chores'>"+snapshot.key+"</p><p>Worth: "+points+" points</p><p>For: "+kid+"</p><button class='rmvChore btn btn-light btn-sm' id='"+snapshot.key+"'>Remove chore</button>"); //Updates text of kid
 				newChore.addClass("chores");
-				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pair
+				newChore.attr("id", snapshot.key); //Sets id equal to key name of key:value pointsTotal
 				$("#listOfChores").append(newChore);
 				}
 			});
@@ -367,12 +367,16 @@ dbRefChores.on('child_added', function(snapshot){
              var datetime =
             currentdate.getDate() + "/"
                              + (currentdate.getMonth()+1)  + "/"
-                             + currentdate.getFullYear() + " @ "
+                             + currentdate.getFullYear()
+
+                              + " @ "
                              + currentdate.getHours() + ":"
                              + currentdate.getMinutes() + ":"
-                             + currentdate.getSeconds();
+                             + currentdate.getSeconds()
+                             ;
 
                             //  console.log(datetime);
+
                              dates.push(datetime);
 
             // console.log(child.val().Total);
@@ -402,7 +406,7 @@ dbRefChores.on('child_added', function(snapshot){
 
              var total = [];
             for (var i=0; i < time.length; i++){
-            total.push(diffArray[i] + prioArray[i] + time[i]);
+            total.push(diffArray[i] + prioArray[i]);
             }
 
 
@@ -437,26 +441,27 @@ dbRefChores.on('child_added', function(snapshot){
                      hoverBorderColor: 'lightgrey'
                   },
 
-                  {
-                    label: 'Total',
-                    data: total,
-
-                    backgroundColor: "rgba(230, 72, 104, 0)",
-                      hoverBackgroundColor: "rgba(230, 72, 104, 0)",
-
-                  },
+                  // {
+                  //   label: 'Total',
+                  //   data: total,
+                  //
+                  //   backgroundColor: "rgba(230, 72, 104, 0)",
+                  //     hoverBackgroundColor: "rgba(230, 72, 104, 0)",
+                  //
+                  // },
                   ]
               },
               options: {
-                   animation: {
-                   duration: 10,
-                  },
+                   animation:false,
+
+                  //  {
+                  //  duration: 10,
+                  // },
                   tooltips: {
                    mode: 'label',
                     callbacks: {
                     label: function(tooltipItem, data) {
                      return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
-
                     }
                     }
                    },
@@ -464,6 +469,10 @@ dbRefChores.on('child_added', function(snapshot){
                     xAxes: [{
                      stacked: true,
                       gridLines: { display: false },
+                      ticks: {
+                        min: 0,
+                        max: 100
+                      }
                       }],
                     yAxes: [{
                      stacked: true,
@@ -476,120 +485,102 @@ dbRefChores.on('child_added', function(snapshot){
               } // options
              });
 
-
-
             //end firstchart
+
             //start second chart
-
-          var dayz = [];
-          var spawnTot = [];
-          var scoreTot = [];
-          var data = [];
-
-var dbRefHisto = dbRefUser.child("history");
-
-  dbRefHisto.on('child_added', function(childSnapshot){
-
-      histo = childSnapshot.val();
-      dateHisto = childSnapshot.key;
-      //console.log(dateHisto);
-      //console.log(histo);
-      data.push(histo);
-      //console.log(data);
-
-      dayz.push(dateHisto);
-      //console.log(dayz);
-    });
-
-    var dbRefHisto = dbRefUser.child("children");
-
-      dbRefHisto.on('child_added', function(childSnapshot){
-
-childSnapshot.forEach(function(child){
-  pair = child.val();
-//  console.log(pair);
-
-  scoreTot.push(pair);
-  console.log(scoreTot);
-
-var kidNameTot = Object.keys(pair).toString();
-
-spawnTot.push(kidNameTot);
-//console.log(spawnTot);
-
-// var pointTot = (parseInt(pair[kidNameTot]));
-//   //(Object.values(pair)));
+// 
+//           var dayz = [];
+//           var spawnTot = [];
+//           var scoreTot = [];
+//           var data = [];
 //
-// scoreTot.push(pointTot);
+//
+// var dbRefHisto = dbRefUser.child("history");
+//
+//   dbRefHisto.on('child_added', function(childSnapshot){
+//
+//       histo = childSnapshot.val();
+//       dateHisto = childSnapshot.key;
+//       //console.log(dateHisto);
+//       //console.log(histo);
+//       data.push(histo);
+//       //console.log(data);
+//
+//       dayz.push(dateHisto);
+//       //console.log(dayz);
+//
+//     var dbRefKids = dbRefUser.child("children");
+//
+//       dbRefKids.on('child_added', function(childSnapshot){
+//
+// childSnapshot.forEach(function(child){
+//   pointsTotal = child.val();
+//   //console.log(pointsTotal);
+//
+//   scoreTot.push(parseInt(pointsTotal));
+//   //console.log(scoreTot);
+//
+//
+// var kidNameTot = Object.keys(pointsTotal).toString();
+//
+// spawnTot.push(kidNameTot);
+// //console.log(spawnTot);
+//
+// });
 // //console.log(scoreTot);
-
-
-// var toLookBetter = {}
-// data.forEach(function(task){
-//   // console.log(Object.keys(task))
 //
-//    var task = task[Object.keys(task)]
-//    var kid = Object.keys(task)
-//    //console.log(kid[0])
-//    if( Object.keys(toLookBetter).includes(kid[0])){
-//     toLookBetter[kid[0]].push(task[kid])
-//    }else{
-//     toLookBetter[kid[0]] = []
-//     toLookBetter[kid[0]].push(task[kid])
-//    }
-// })
-//console.log(toLookBetter[kid[i]]);
-//console.log(task[kid]);
-
-});
-//console.log(scoreTot);
-
-
-//});
-
-
-            new Chart(document.getElementById("line-chart"), {
-  type: 'line',
-  data: {
-    labels: dayz,
-    datasets: [{
-        data: scoreTot[0],
-        label: spawnArray[0],
-        borderColor: "#3e95cd",
-        fill: false
-      }, {
-        data: scoreTot[1],
-        label: spawnArray[1],
-        borderColor: "#8e5ea2",
-        fill: false
-      },
-      // {
-      //   data: scoreTot[2],
-      //   label: spawnArray[2],
-      //   borderColor: "#12b99f",
-      //   fill: false
-      // },
-      //  {
-      //   data: scoreTot[3],
-      //   label: spawnArray[3],
-      //   borderColor: "#7b9677",
-      //   fill: false
-      // }, {
-      //   data: scoreTot[4],
-      //   label: spawnArray[4],
-      //   borderColor: "#c5db5ds",
-      //   fill: false
-      // }
-    ]
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Points Per Child Per Day'
-    }
-  }
-});//end second chart
-});
+//
+//
+//     var line_ctx = document.getElementById('line-chart');
+//     //test arrays by child
+//     var mario = scoreTot[0];
+//     var bruce = scoreTot[1];
+//     var ortho = scoreTot[2];
+// var line_chart = new Chart(line_ctx, {
+//   type: 'line',
+//   data: {
+//     labels: dayz,
+//     datasets: [{
+//         data: mario,
+//         label: spawnArray[0],
+//         borderColor: "#3e95cd",
+//         fill: false
+//       }, {
+//         data: bruce,
+//         label: spawnArray[1],
+//         borderColor: "#8e5ea2",
+//         fill: false
+//       },
+//       {
+//         data: ortho,
+//         label: spawnArray[2],
+//         borderColor: "#12b99f",
+//         fill: false
+//       },
+//       //  {
+//       //   data: scoreTot,
+//       //   label: spawnArray[3],
+//       //   borderColor: "#7b9677",
+//       //   fill: false
+//       // }, {
+//       //   data: scoreTot,
+//       //   label: spawnArray[4],
+//       //   borderColor: "#c5db5ds",
+//       //   fill: false
+//       // }
+//     ]
+//   },
+//   options: {
+//     title: {
+//       display: true,
+//       text: 'Points Per Child Per Day'
+//     }
+//   }
+// })//end second chart
+//
+//
+// });
+// });
           });//end forEach function
 }); //just added
 }//just added 2

@@ -231,6 +231,7 @@ $(document).ready( function(){
       //onClick event for Logout button
       btnSignOut.on("click", function(){
         firebase.auth().signOut();
+        window.location.href = "index.html";
       });
 
       //onClick of submitChild

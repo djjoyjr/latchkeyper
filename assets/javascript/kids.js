@@ -230,6 +230,7 @@ $(document).ready(function() {
         var monthDay = month + "-" + day;
         var dbRefHist = dbRefUser.child("history");
         var dbRefDay = dbRefHist.child(monthDay);
+        dbRefChores.child(chore).update({"done":true});
         dbRefChores.once("value", function(snapshot){
             pointsAdd = snapshot.child(chore).val().Total;
             // console.log(pointsAdd);
@@ -253,6 +254,7 @@ $(document).ready(function() {
   //onClick event for Logout button
   btnSignOut.on("click", function() {
     firebase.auth().signOut();
+    window.location.href = "index.html";
   });
 
   //onClick of addChore

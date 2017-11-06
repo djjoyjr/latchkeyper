@@ -394,8 +394,8 @@ dbRefChores.on('child_added', function(snapshot){
                   {
                       label: 'Difficulty',
                       data: diffArray,
-                     backgroundColor: "rgba(123,150,119, 1)",
-                     hoverBackgroundColor: "rgba(123,150,119, 1)",
+                     backgroundColor: "rgba(18,185,159, 1)",
+                     hoverBackgroundColor: "rgba(18,185,159, 1)",
                      hoverBorderWidth: 2,
                      hoverBorderColor: 'lightgrey'
                   },
@@ -536,17 +536,17 @@ spawnTot.push(kidNameTot);
       }, {
         data: scoreTot,
         label: spawnArray[2],
-        borderColor: "#3cba9f",
+        borderColor: "#12b99f",
         fill: false
       }, {
         data: scoreTot,
         label: spawnArray[3],
-        borderColor: "#e8c3b9",
+        borderColor: "#7b9677",
         fill: false
       }, {
         data: scoreTot,
         label: spawnArray[4],
-        borderColor: "#c45850",
+        borderColor: "#c5db5ds",
         fill: false
       }
     ]

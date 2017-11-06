@@ -98,7 +98,7 @@ $(document).ready(function() {
           var msgFromParent = $('<div></div>');
           msgFromParent.addClass("message");
           msgFromParent.attr("id", dm);
-          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.key + "'>Delete Message</button>");
+          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.key + "  ' > Delete Message </button>");
           $("#message").append(msgFromParent);
           }
         });
@@ -113,18 +113,6 @@ $(document).ready(function() {
         console.log(dbRefMsgToDelete.key);
         dbRefMsgToDelete.child('messages').remove();
         });
-
-      //sets values for the selector list identifying who's requesting a reward
-     dbRefKids.once("value", function(snapshot) {
-       snapshot.forEach(function(rewardsnap) {
-         var requester = rewardsnap.key;
-         $('<option />', {
-           value: requester,
-           text: requester
-         }).appendTo(requestlist);
-       });
-     });
-
 
      //Child can request a reward from parents
     $("#request-reward-button").click(requestReward);
@@ -167,6 +155,21 @@ $(document).ready(function() {
         }).appendTo(requestlist);
       });
     });
+
+    //Creates buttons for each requested reward from db
+      dbRefKids.on('child_added', function(snapshot){
+        if (snapshot.val().reward) {
+          var requester = snapshot.key;
+          var rewardRequest = $('<div></div>'); //Creates new div
+          var request = snapshot.val().reward;
+          rewardRequest.addClass("rewardButtonClass");
+          // rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
+          rewardRequest.attr("id", snapshot.key);
+          rewardRequest.text(requester + ":  " + request);
+          $("#reward-requests").append(rewardRequest);
+        };
+    });
+
 
       //Generate task div for each child of "children"
       var kidsTasks = $("#kidTasks");
@@ -229,9 +232,7 @@ $(document).ready(function() {
         var monthDay = month + "-" + day;
         var dbRefHist = dbRefUser.child("history");
         var dbRefDay = dbRefHist.child(monthDay);
-        dbRefChores.child(chore).update(
-
-        );
+        dbRefChores.child(chore).update({"done":true});
         dbRefChores.once("value", function(snapshot){
             pointsAdd = snapshot.child(chore).val().Total;
             // console.log(pointsAdd);
@@ -255,6 +256,7 @@ $(document).ready(function() {
   //onClick event for Logout button
   btnSignOut.on("click", function() {
     firebase.auth().signOut();
+    window.location.href = "index.html";
   });
 
   //onClick of addChore

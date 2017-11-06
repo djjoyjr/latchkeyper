@@ -53,6 +53,7 @@ $(document).ready( function(){
     		var dbRefKids = dbRefUser.child("children");
     		var dbRefChores = dbRefUser.child("chores");
         var dbRefMessages = dbRefUser.child("messages");
+        var dbRefCheckIn = dbRefKids.child("checkIn");
 
 
     		//Updates listOfKids when child added (or on load)
@@ -85,6 +86,34 @@ $(document).ready( function(){
             dbRefMessage.child('message').remove();
           });
 
+
+
+          //Updates message center with Check In from kids pulled from database
+            dbRefKids.on('child_added', function(snapshot){
+              if (snapshot.val().checkIn) {
+                var whoCheckIn = snapshot.key;
+                console.log(whoCheckIn);
+                var chk = $('<div></div>'); //Creates new div
+                var checkIn = snapshot.val().checkIn;
+                chk.addClass("rewardButtonClass");
+                chk.attr("id",snapshot.key);
+                chk.text(whoCheckIn +" checked in at: " +checkIn);
+                // chk.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'"><p>Remove</p></button>');
+                $("#check-ins").append(chk);
+              };
+          });
+
+            // //Removes message from kids from db on click
+            // $("#messages").on("click", "button", function(){
+            //   console.log(this.id);
+            //   var dbRefUser = dbRefRoot.child(activeUser);
+            //   var dbRefMessage = dbRefUser.child('messages');
+            //   console.log(dbRefMessage.key);
+            //   var dbRefMsgToDelete = dbRefMessage.child('message');
+            //   console.log(dbRefMessage.child);
+            //   dbRefMessage.child('message').remove();
+            // });
+
       //enables on click listen for dynamically created buttons
       //sends message to whichever kid's button the parent clicks on
       $('#children').on('click', ".msgKid", function() {
@@ -99,7 +128,6 @@ $(document).ready( function(){
             var rewardRequest = $('<div></div>'); //Creates new div
             var request = snapshot.val().reward;
             rewardRequest.addClass("rewardButtonClass");
-            // rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
             rewardRequest.attr("id",snapshot.key);
             $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+ requester +"<p> requests: </p>" +request+'</button>');
           };
@@ -231,6 +259,7 @@ $(document).ready( function(){
       //onClick event for Logout button
       btnSignOut.on("click", function(){
         firebase.auth().signOut();
+        window.location.href = "index.html";
       });
 
       //onClick of submitChild
@@ -481,7 +510,7 @@ childSnapshot.forEach(function(child){
 //  console.log(pair);
 
   scoreTot.push(pair);
-  console.log(scoreTot);
+  // console.log(scoreTot);
 
 var kidNameTot = Object.keys(pair).toString();
 

@@ -230,9 +230,6 @@ $(document).ready(function() {
         var monthDay = month + "-" + day;
         var dbRefHist = dbRefUser.child("history");
         var dbRefDay = dbRefHist.child(monthDay);
-        dbRefChores.child(chore).update(
-
-        );
         dbRefChores.once("value", function(snapshot){
             pointsAdd = snapshot.child(chore).val().Total;
             // console.log(pointsAdd);

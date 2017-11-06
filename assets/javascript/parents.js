@@ -98,6 +98,7 @@ $(document).ready( function(){
                 chk.addClass("rewardButtonClass");
                 chk.attr("id",snapshot.key);
                 chk.text(whoCheckIn +" checked in at: " +checkIn);
+                // chk.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'"><p>Remove</p></button>');
                 $("#check-ins").append(chk);
               };
           });
@@ -127,7 +128,6 @@ $(document).ready( function(){
             var rewardRequest = $('<div></div>'); //Creates new div
             var request = snapshot.val().reward;
             rewardRequest.addClass("rewardButtonClass");
-            // rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
             rewardRequest.attr("id",snapshot.key);
             $("#reward-requests").append('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">'+ requester +"<p> requests: </p>" +request+'</button>');
           };

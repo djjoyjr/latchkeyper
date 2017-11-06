@@ -98,7 +98,7 @@ $(document).ready(function() {
           var msgFromParent = $('<div></div>');
           msgFromParent.addClass("message");
           msgFromParent.attr("id", dm);
-          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.key + "'>Delete Message</button>");
+          msgFromParent.html(recipient + ": " + dm + "<button id='" + msgsnap.key + "  ' > Delete Message </button>");
           $("#message").append(msgFromParent);
           }
         });

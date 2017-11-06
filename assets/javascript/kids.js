@@ -164,8 +164,9 @@ $(document).ready(function() {
           var request = snapshot.val().reward;
           rewardRequest.addClass("rewardButtonClass");
           // rewardRequest.html('<button type="button" class="btn btn-primary" id="'+snapshot.key+'">Respond to a Request</button>');
-          rewardRequest.attr("id",snapshot.key);
-          $("#reward-requests").append(requester +" <p>  wants a: </p>" +request+'</button>');
+          rewardRequest.attr("id", snapshot.key);
+          rewardRequest.text(requester + ":  " + request);
+          $("#reward-requests").append(rewardRequest);
         };
     });
 

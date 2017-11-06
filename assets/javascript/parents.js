@@ -95,7 +95,7 @@ $(document).ready( function(){
                 var checkIn = snapshot.val().checkIn;
                 chk.addClass("rewardButtonClass");
                 chk.attr("id",snapshot.key);
-                chk.html(whoCheckIn +" checked in at: " +checkIn + '<button type="button" class="btn btn-primary" id='+whoCheckIn+'><p>Remove</p></button>');
+                chk.html(whoCheckIn +" checked in at: " +checkIn + '<button type="button" class="btn btn-light" id='+whoCheckIn+'><p>Remove</p></button>');
                 $("#check-ins").append(chk);
               };
           });

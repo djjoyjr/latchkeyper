@@ -114,18 +114,6 @@ $(document).ready(function() {
         dbRefMsgToDelete.child('messages').remove();
         });
 
-      //sets values for the selector list identifying who's requesting a reward
-     dbRefKids.once("value", function(snapshot) {
-       snapshot.forEach(function(rewardsnap) {
-         var requester = rewardsnap.key;
-         $('<option />', {
-           value: requester,
-           text: requester
-         }).appendTo(requestlist);
-       });
-     });
-
-
      //Child can request a reward from parents
     $("#request-reward-button").click(requestReward);
     function requestReward() {

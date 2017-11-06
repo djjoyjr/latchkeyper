@@ -208,7 +208,9 @@ $(document).ready(function() {
           points = tasksnap.val().Total;
           who = tasksnap.val().For;
           // console.log(who);
-          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>"); //Updates text of kid
+          taskDiv.html("<p class='chores'>"+tasksnap.key+"</p><p>Worth: "+points+" points</p><button class='"+who+"' id='"+tasksnap.key+"'>Complete chore</button>");
+
+           //Updates text of kid
           taskDiv.addClass("chores");
           taskDiv.attr("id", "chore-div");
           // console.log(taskDiv);
@@ -302,6 +304,22 @@ $(document).ready(function() {
     dbRefChores.child(this.id).remove();
   });
 
-
-
+//popup on complete chore
+// $(function() {
+//     //----- OPEN
+//     $("#kidTasks").on("click", "button", function(e)  {
+//         var targeted_popup_class = jQuery('data-popup-open').attr('data-popup-open');
+//         $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+//
+//         e.preventDefault();
+//     });
+//
+//     //----- CLOSE
+//     $('[data-popup-close]').on('click', function(e)  {
+//         var targeted_popup_class = jQuery(this).attr('data-popup-close');
+//         $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+//
+//         e.preventDefault();
+//     });
+// });
 }); //End of document.ready
